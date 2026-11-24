@@ -1,13 +1,39 @@
-# TP Kafka / Flink : préparation du poste
+# TP Kafka / Flink
 
 Module « Traitement de flux en temps réel (Kafka, Flink) », 3iL, 2026-2027.
 
-## Ce qu'il faut rendre
+## Le compte rendu des TP (TP0 à TP6)
+
+| Fichier | Contenu |
+|---|---|
+| `compte-rendu/Compte_rendu_TP_Kafka_Flink.docx` | Compte rendu Word, 47 pages : commandes, sorties obtenues, captures, réponses à toutes les questions (Q1, Q2…), exercices 2 à 5 |
+| `compte-rendu/Compte_rendu_TP_Kafka_Flink.pdf` | Le même en PDF, sommaire à jour |
+| `compte-rendu/captures/` | Les 14 captures d'écran (Kafka UI, Flink, Prometheus, Grafana) |
+| `tp1/producer.py`, `tp1/consumer.py` | TP1 C (et TP5 B) : producteur ; consommateur avec commit après traitement, `--panne 500`, `--idempotent`, `--lent 0.01` |
+| `tp3/03_enrichissement.sql`, `tp3/verif_ca_minute.py` | TP3 C : job Kafka vers Kafka ; TP3 Q7 : recalcul du chiffre d'affaires par minute |
+| `tp4/retards.sql`, `tp4/etat_ttl.sql`, `tp4/ca_minute_exactly_once.sql` | TP4 B, C, E : watermarks 0 / 5 / 60 s, TTL, sink exactly-once |
+| `tp5/skew_apres.sql`, `tp5/skew_salage.sql` | TP5 C : mini-batch + deux phases ; salage de clé |
+| `tp6/pipeline.sql`, `tp6/alertes_consumer.py` | TP6 : pipeline complet en un seul job ; affichage des alertes avec dédoublonnage |
+| `TP_Kafka_Flink.pdf`, `Kit_TP_Kafka_Flink.zip` | Énoncé et kit fournis par l'enseignant |
+
+À compléter avant de rendre : la page de garde du compte rendu (noms du binôme, groupe, enseignant, date).
+Dans Word, accepter la mise à jour des champs à l'ouverture (sommaire), ou faire clic droit sur le sommaire,
+« Mettre à jour les champs ».
+
+Les sorties et captures du compte rendu ont été obtenues en exécutant réellement les TP avec le kit,
+sur une machine Linux (Docker, 4 processeurs virtuels, 15 Go de mémoire). Les mesures de performance du TP5
+dépendent de la machine.
+
+Lancer les fichiers SQL : copier le fichier dans `kit/sql/` (monté sur `/opt/sql` dans le JobManager), puis
+`docker compose exec jobmanager ./bin/sql-client.sh -i /opt/sql/init.sql -f /opt/sql/<fichier>.sql`.
+Lancer les scripts Python depuis le dossier du kit, environnement virtuel activé.
+
+## Préparation du poste (guide d'installation)
 
 Le document `Guide_Installation_TP_Docker (1).docx` est le **guide d'installation de l'environnement**,
 à suivre **sur ton propre PC, avant le premier TP** (compter 1 h à 1 h 30 et environ 3 Go à télécharger).
 
-Le rendu, ce sont **2 captures d'écran** à envoyer à l'enseignant :
+Pour ce guide, le rendu, ce sont **2 captures d'écran de ton poste** à envoyer à l'enseignant :
 
 | Capture | Ce qu'on doit voir | Adresse |
 |---|---|---|
@@ -17,14 +43,14 @@ Le rendu, ce sont **2 captures d'écran** à envoyer à l'enseignant :
 Si ton PC ne peut pas faire tourner Docker (moins de 8 Go de mémoire, pas de droits administrateur),
 préviens l'enseignant **avant le premier cours** : tu travailleras en binôme.
 
-**Il te faut aussi le kit `Kit_TP_Kafka_Flink.zip`, fourni par l'enseignant.** Il n'est pas dans ce repo.
+Le kit `Kit_TP_Kafka_Flink.zip` est à la racine de ce dépôt : le dézipper dans `C:\tp-kafka`.
 
-## Méthode rapide sous Windows : 2 scripts
+### Méthode rapide sous Windows : 2 scripts
 
 Les scripts suivent le guide étape par étape, vérifient chaque résultat et te disent quoi faire en cas
 de problème. `-ExecutionPolicy Bypass` n'autorise le script que pour ce lancement-là.
 
-### Script 1 : WSL 2 et Docker Desktop (PowerShell en administrateur)
+#### Script 1 : WSL 2 et Docker Desktop (PowerShell en administrateur)
 
 Clic droit sur PowerShell, « Exécuter en tant qu'administrateur », puis :
 
@@ -39,7 +65,7 @@ d'installer Docker Desktop avec winget.
 Ensuite : **redémarre** si le script le demande, lance Docker Desktop (« Skip » pour le compte) et
 attends que la baleine soit immobile.
 
-### Script 2 : kit, Python, images et tests (PowerShell normal)
+#### Script 2 : kit, Python, images et tests (PowerShell normal)
 
 Dézippe le kit dans `C:\tp-kafka` (chemin sans espaces ni accents), puis :
 
@@ -61,7 +87,7 @@ Il enchaîne les étapes 3 à 5 du guide :
 Les captures sont à enregistrer dans le dossier `captures/` de ce repo (le script indique le chemin exact).
 Pour relancer les tests sans tout retélécharger : ajoute `-SansTelechargement`.
 
-## Checklist à la main (si tu préfères ne pas utiliser les scripts)
+### Checklist à la main (si tu préfères ne pas utiliser les scripts)
 
 - [ ] Virtualisation activée (Gestionnaire des tâches, Performances, Processeur)
 - [ ] `wsl --install`, redémarrage, `wsl --status` affiche 2
@@ -101,8 +127,12 @@ Pour tout problème, voir la section « Dépannage » du guide Word.
 ## Contenu du repo
 
 ```
-Guide_Installation_TP_Docker (1).docx   guide fourni par l'enseignant
-scripts/1-installer-wsl-docker.ps1      étape 1 : WSL 2, .wslconfig, Docker Desktop (admin)
-scripts/2-tester-kit.ps1                étapes 2 à 5 : Python, images, tests, captures
-captures/                               créé par le script 2 pour y ranger les 2 captures
+compte-rendu/                           compte rendu Word + PDF, captures d'écran
+tp1/ tp3/ tp4/ tp5/ tp6/                scripts Python et requêtes SQL des TP
+TP_Kafka_Flink.pdf                      énoncé des TP
+Kit_TP_Kafka_Flink.zip                  kit fourni par l'enseignant
+Guide_Installation_TP_Docker (1).docx   guide d'installation fourni par l'enseignant
+scripts/1-installer-wsl-docker.ps1      guide, étape 1 : WSL 2, .wslconfig, Docker Desktop (admin)
+scripts/2-tester-kit.ps1                guide, étapes 2 à 5 : Python, images, tests, captures du poste
+captures/                               créé par le script 2 pour y ranger les 2 captures du guide
 ```
