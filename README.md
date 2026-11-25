@@ -28,6 +28,12 @@ Lancer les fichiers SQL : copier le fichier dans `kit/sql/` (monté sur `/opt/sq
 `docker compose exec jobmanager ./bin/sql-client.sh -i /opt/sql/init.sql -f /opt/sql/<fichier>.sql`.
 Lancer les scripts Python depuis le dossier du kit, environnement virtuel activé.
 
+## Exercice intégré : suivi d'expéditions, du flux au batch
+
+Dossier `exercice_expeditions/` : kit construit pour l'exercice (générateur, historique), fichiers SQL Flink,
+notebook Spark exécuté, configuration HDFS et compte rendu (`exercice_expeditions/compte-rendu/`).
+Voir `exercice_expeditions/README.md`.
+
 ## Préparation du poste (guide d'installation)
 
 Le document `Guide_Installation_TP_Docker (1).docx` est le **guide d'installation de l'environnement**,

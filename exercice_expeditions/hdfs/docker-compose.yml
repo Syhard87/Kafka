@@ -1,0 +1,18 @@
+# HDFS mono-machine pour l'exercice (équivalent de la checklist Colab) : 1 NameNode + 1 DataNode
+services:
+  namenode:
+    image: apache/hadoop:3.4.1
+    hostname: namenode
+    container_name: namenode
+    command: ["hdfs", "namenode"]
+    ports: ["9870:9870", "8020:8020"]
+    env_file: ./config
+    environment:
+      ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+  datanode:
+    image: apache/hadoop:3.4.1
+    hostname: datanode
+    container_name: datanode
+    command: ["hdfs", "datanode"]
+    ports: ["9864:9864"]
+    env_file: ./config
