@@ -34,6 +34,13 @@ Dossier `exercice_expeditions/` : kit construit pour l'exercice (générateur, h
 notebook Spark exécuté, configuration HDFS et compte rendu (`exercice_expeditions/compte-rendu/`).
 Voir `exercice_expeditions/README.md`.
 
+## Présentation : sauvegarder une chaîne Lambda
+
+Dossier `presentation_sauvegardes/` : `sauvegardes-chaine-lambda.html`, 8 slides animées sur les types de
+sauvegarde (totale, incrémentale, différentielle) et la façon dont Kafka, Flink, HDFS et Spark se protègent.
+Ouvrir le fichier dans Chrome ou Edge, F11 pour le plein écran, flèches pour avancer. Les fichiers `.md` à
+côté sont le plan et les sources des chiffres.
+
 ## Préparation du poste (guide d'installation)
 
 Le document `Guide_Installation_TP_Docker (1).docx` est le **guide d'installation de l'environnement**,
