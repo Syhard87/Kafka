@@ -1782,10 +1782,11 @@ if(p)p.textContent='This browser is missing '+m.join(', ')+". The deck cannot pr
  </defs>
  <symbol id="i-source" data-icon="file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
  <symbol id="i-sources" data-icon="library" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol>
- <symbol id="i-target" data-icon="target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
- <symbol id="i-calendar" data-icon="calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
- <symbol id="i-map" data-icon="map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
  <symbol id="i-split" data-icon="split" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></symbol>
+ <symbol id="i-calendar" data-icon="calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+ <symbol id="i-chart" data-icon="chart-column" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+ <symbol id="i-map" data-icon="map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+ <symbol id="i-branch" data-icon="git-branch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
  <symbol id="i-clock" data-icon="clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
  <symbol id="i-lock" data-icon="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
  <symbol id="i-check" data-icon="circle-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
@@ -1794,32 +1795,53 @@ if(p)p.textContent='This browser is missing '+m.join(', ')+". The deck cannot pr
 <div class="viewport" id="viewport">
 <main class="stage" id="stage" aria-label="Presentation">
 
-<!-- ============================================================ 1 — le critère -->
-<section class="slide" data-name="La restauration juge la sauvegarde" data-stage="0" aria-label="Slide 1">
+<!-- ============================================================ 1 — les trois types (A-10) -->
+<section class="slide" data-name="Tout dépend du point de comparaison" data-stage="0" aria-label="Slide 1">
   <header>
-    <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Mesurer une sauvegarde : RPO et RTO</p>
-    <h2 class="headline d-title rise" style="--i:1">La restauration juge la sauvegarde</h2>
-    <p class="standfirst rise" style="--i:2">Une copie ne compte qu'au moment où il faut repartir.</p>
+    <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Totale, incrémentale, différentielle</p>
+    <h2 class="headline d-title rise" style="--i:1">Tout dépend du point de comparaison</h2>
+    <p class="standfirst rise" style="--i:2">Chaque sauvegarde copie ce qui a changé depuis un point de départ, et ce point n'est pas le même.</p>
   </header>
   <div class="body d-fig rise" style="--i:3">
-    <svg class="fig" preserveAspectRatio="xMinYMid meet" viewBox="0 0 1728 400" role="img"
-         aria-label="Frise : la dernière sauvegarde, puis la panne, puis la reprise. Entre la sauvegarde et la panne, les données perdues : le RPO. Entre la panne et la reprise, le temps d'arrêt : le RTO.">
-      <line class="axis" x1="0" y1="200" x2="1700" y2="200"/>
-      <circle class="accent" cx="200" cy="200" r="14"/>
-      <text class="name" x="200" y="270" text-anchor="middle">Dernière sauvegarde</text>
-      <rect class="d-mark" x="887" y="187" width="26" height="26" rx="4"/>
-      <text class="name" x="900" y="270" text-anchor="middle">Panne</text>
-      <circle class="accent" cx="1500" cy="200" r="14"/>
-      <text class="name" x="1500" y="270" text-anchor="middle">Reprise</text>
-      <path class="accent-s" d="M200 140 L200 120 L900 120 L900 140" stroke-width="3"/>
-      <text class="lab t-accent" x="550" y="100" text-anchor="middle">RPO · données perdues</text>
-      <path class="accent-s" d="M900 140 L900 120 L1500 120 L1500 140" stroke-width="3"/>
-      <text class="lab t-accent" x="1200" y="100" text-anchor="middle">RTO · service arrêté</text>
-      <text class="val t-soft" x="550" y="340" text-anchor="middle">Jusqu'où on revient en arrière</text>
-      <text class="val t-soft" x="1200" y="340" text-anchor="middle">Combien de temps pour repartir</text>
+    <svg class="fig" preserveAspectRatio="xMinYMid meet" viewBox="0 0 1728 470" role="img"
+         aria-label="Quatre jours de sauvegardes, du dimanche au mercredi. Totale : chaque jour est une totale, sans point de comparaison. Incrémentale : une totale le dimanche, puis chaque jour compare à la veille. Différentielle : une totale le dimanche, puis chaque jour compare à cette totale.">
+      <defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head-a" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+      <text class="lab" x="600" y="20" text-anchor="middle">Dimanche</text>
+      <text class="lab" x="900" y="20" text-anchor="middle">Lundi</text>
+      <text class="lab" x="1200" y="20" text-anchor="middle">Mardi</text>
+      <text class="lab" x="1500" y="20" text-anchor="middle">Mercredi</text>
+
+      <text class="name" x="0" y="74">Totale</text>
+      <text class="val t-soft" x="0" y="108">copie tout</text>
+      <rect class="accent" x="530" y="54" width="140" height="52" rx="8"/><text class="val t-paper" x="600" y="88" text-anchor="middle">totale</text>
+      <rect class="accent" x="830" y="54" width="140" height="52" rx="8"/><text class="val t-paper" x="900" y="88" text-anchor="middle">totale</text>
+      <rect class="accent" x="1130" y="54" width="140" height="52" rx="8"/><text class="val t-paper" x="1200" y="88" text-anchor="middle">totale</text>
+      <rect class="accent" x="1430" y="54" width="140" height="52" rx="8"/><text class="val t-paper" x="1500" y="88" text-anchor="middle">totale</text>
+
+      <text class="name" x="0" y="229">Incrémentale</text>
+      <text class="val t-soft" x="0" y="263">ce qui a changé depuis la veille</text>
+      <rect class="accent" x="530" y="209" width="140" height="52" rx="8"/><text class="val t-paper" x="600" y="243" text-anchor="middle">totale</text>
+      <rect class="d-box" x="830" y="209" width="140" height="52" rx="8"/><text class="val" x="900" y="243" text-anchor="middle">incr.</text>
+      <rect class="d-box" x="1130" y="209" width="140" height="52" rx="8"/><text class="val" x="1200" y="243" text-anchor="middle">incr.</text>
+      <rect class="d-box" x="1430" y="209" width="140" height="52" rx="8"/><text class="val" x="1500" y="243" text-anchor="middle">incr.</text>
+      <path class="accent-s" d="M880 207 Q750 160 640 205" stroke-width="3" fill="none" marker-end="url(#ar1)"/>
+      <path class="accent-s" d="M1180 207 Q1050 160 940 205" stroke-width="3" fill="none" marker-end="url(#ar1)"/>
+      <path class="accent-s" d="M1480 207 Q1350 160 1240 205" stroke-width="3" fill="none" marker-end="url(#ar1)"/>
+      <text class="lab t-accent" x="1050" y="166" text-anchor="middle">compare à la veille</text>
+
+      <text class="name" x="0" y="404">Différentielle</text>
+      <text class="val t-soft" x="0" y="438">ce qui a changé depuis la totale</text>
+      <rect class="accent" x="530" y="384" width="140" height="52" rx="8"/><text class="val t-paper" x="600" y="418" text-anchor="middle">totale</text>
+      <rect class="d-box" x="830" y="384" width="140" height="52" rx="8"/><text class="val" x="900" y="418" text-anchor="middle">diff.</text>
+      <rect class="d-box" x="1130" y="384" width="140" height="52" rx="8"/><text class="val" x="1200" y="418" text-anchor="middle">diff.</text>
+      <rect class="d-box" x="1430" y="384" width="140" height="52" rx="8"/><text class="val" x="1500" y="418" text-anchor="middle">diff.</text>
+      <path class="accent-s" d="M880 382 Q770 340 645 382" stroke-width="3" fill="none" marker-end="url(#ar1)"/>
+      <path class="accent-s" d="M1180 382 Q890 300 600 382" stroke-width="3" fill="none" marker-end="url(#ar1)"/>
+      <path class="accent-s" d="M1480 382 Q1010 260 555 382" stroke-width="3" fill="none" marker-end="url(#ar1)"/>
+      <text class="lab t-accent" x="1250" y="300" text-anchor="middle">compare à la totale</text>
     </svg>
   </div>
-  <p class="bottom-line rise" style="--i:4"><b>Deux mesures comptent : les données qu'on accepte de perdre (RPO) et le temps pour repartir (RTO).</b></p>
+  <p class="bottom-line rise" style="--i:4"><b>La totale copie tout ; l'incrémentale, les changements depuis la veille ; la différentielle, depuis la dernière totale.</b></p>
   <p class="provenance"></p>
 </section>
 
@@ -1900,75 +1922,54 @@ if(p)p.textContent='This browser is missing '+m.join(', ')+". The deck cannot pr
   <p class="provenance"><span class="sources sources--one"><svg class="sources-mark" aria-hidden="true"><use href="#i-source"/></svg><span class="sources-box" id="src2"><span class="sources-item"><button class="sources-open" type="button" data-qv="Modèle illustratif" data-file="modele-semaine.md">Modèle illustratif</button><template class="qv-src" data-qv="Modèle illustratif"><h1>Modèle illustratif : une semaine de sauvegardes</h1><p>Exemple construit pour expliquer, pas une mesure. Hypothèses : 4 fichiers A, B, C, D ; sauvegarde totale le dimanche ; un fichier modifié par jour (lundi B, mardi C, mercredi D) ; panne le jeudi matin.</p><table><tr><th>Jour</th><th>Totale chaque jour</th><th>Incrémentale (depuis la veille)</th><th>Différentielle (depuis la totale)</th></tr><tr><td>Dimanche</td><td>A B C D</td><td>A B C D (totale)</td><td>A B C D (totale)</td></tr><tr><td>Lundi</td><td>A B C D</td><td>B</td><td>B</td></tr><tr><td>Mardi</td><td>A B C D</td><td>C</td><td>B C</td></tr><tr><td>Mercredi</td><td>A B C D</td><td>D</td><td>B C D</td></tr></table><p>Restauration le jeudi :</p><ul><li>totale chaque jour : 1 copie (celle de mercredi) ;</li><li>incrémentale : 4 copies (dimanche, lundi, mardi, mercredi), dans l'ordre ;</li><li>différentielle : 2 copies (dimanche et mercredi).</li></ul><p>Volume copié du lundi au mercredi : totale 12 fichiers, incrémentale 3, différentielle 6.</p><p>Soit, en 3 jours (du lundi au mercredi) : 12 fichiers copiés en totale chaque jour, 3 fichiers en incrémentale, 6 fichiers en différentielle.</p></template></span></span></span></p>
 </section>
 
-<!-- ============================================================ 3 — la carte (A-10) -->
-<section class="slide" data-name="Deux briques gardent les données brutes" data-stage="2" aria-label="Slide 3">
+<!-- ============================================================ 3 — le comparatif (A-04) -->
+<section class="slide" data-name="Chaque type gagne sur un critère" data-stage="2" aria-label="Slide 3">
   <header>
-    <p class="eyebrow rise" style="--i:0"><span class="tick"></span>La chaîne Lambda de l'exercice</p>
-    <h2 class="headline rise" style="--i:1">Deux briques gardent les données brutes</h2>
-    <p class="standfirst rise" style="--i:2">En couleur : les données d'origine, que rien ne permet de recalculer.</p>
+    <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Comparatif des trois types</p>
+    <h2 class="headline rise" style="--i:1">Chaque type gagne sur un critère</h2>
   </header>
-  <div class="body d-fig rise" style="--i:3">
-    <svg class="fig" preserveAspectRatio="xMinYMid meet" viewBox="0 0 1728 500" role="img"
-         aria-label="Chaîne temps réel : le générateur envoie à Kafka, Flink lit Kafka et écrit le topic des alertes. Chaîne batch : l'historique est déposé dans HDFS zone bronze, Spark lit bronze et écrit silver et gold. Kafka et HDFS bronze sont en couleur : ils gardent les données d'origine.">
-      <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head" d="M0 0 L10 5 L0 10 z"/></marker></defs>
-      <text class="lab" x="0" y="32">Temps réel</text>
-      <rect class="d-box" x="0" y="50" width="230" height="110" rx="12"/>
-      <text class="name" x="115" y="115" text-anchor="middle">Générateur</text>
-      <rect class="accent" x="370" y="50" width="320" height="110" rx="12"/>
-      <text class="name t-paper" x="530" y="115" text-anchor="middle">Kafka</text>
-      <text class="val t-soft" x="530" y="200" text-anchor="middle">réplication · rétention</text>
-      <rect class="d-box" x="830" y="50" width="290" height="110" rx="12"/>
-      <text class="name" x="975" y="115" text-anchor="middle">Flink</text>
-      <text class="val t-soft" x="975" y="200" text-anchor="middle">checkpoints · savepoints</text>
-      <rect class="d-box" x="1260" y="50" width="440" height="110" rx="12"/>
-      <text class="name" x="1480" y="115" text-anchor="middle">Topic des alertes</text>
-      <text class="val t-soft" x="1480" y="200" text-anchor="middle">recalculable par Flink</text>
-      <path class="quiet-s current" d="M232 105 L366 105" stroke-width="3" marker-end="url(#ar3)"/>
-      <text class="lab" x="300" y="88" text-anchor="middle">envoie</text>
-      <path class="quiet-s current" d="M692 105 L826 105" stroke-width="3" marker-end="url(#ar3)"/>
-      <text class="lab" x="760" y="88" text-anchor="middle">lit</text>
-      <path class="quiet-s current" d="M1122 105 L1256 105" stroke-width="3" marker-end="url(#ar3)"/>
-      <text class="lab" x="1190" y="88" text-anchor="middle">écrit</text>
-
-      <text class="lab" x="0" y="282">Batch</text>
-      <rect class="d-box" x="0" y="300" width="230" height="110" rx="12"/>
-      <text class="name" x="115" y="365" text-anchor="middle">Historique</text>
-      <rect class="accent" x="370" y="300" width="320" height="110" rx="12"/>
-      <text class="name t-paper" x="530" y="365" text-anchor="middle">HDFS · bronze</text>
-      <text class="val t-soft" x="530" y="450" text-anchor="middle">réplication · snapshots · DistCp</text>
-      <rect class="d-box" x="830" y="300" width="290" height="110" rx="12"/>
-      <text class="name" x="975" y="365" text-anchor="middle">Spark</text>
-      <text class="val t-soft" x="975" y="450" text-anchor="middle">rien à sauvegarder</text>
-      <rect class="d-box" x="1260" y="300" width="440" height="110" rx="12"/>
-      <text class="name" x="1480" y="365" text-anchor="middle">Silver et gold</text>
-      <text class="val t-soft" x="1480" y="450" text-anchor="middle">recalculées depuis bronze</text>
-      <path class="quiet-s current" d="M232 355 L366 355" stroke-width="3" marker-end="url(#ar3)"/>
-      <text class="lab" x="300" y="338" text-anchor="middle">dépôt</text>
-      <path class="quiet-s current" d="M692 355 L826 355" stroke-width="3" marker-end="url(#ar3)"/>
-      <text class="lab" x="760" y="338" text-anchor="middle">lit</text>
-      <path class="quiet-s current" d="M1122 355 L1256 355" stroke-width="3" marker-end="url(#ar3)"/>
-      <text class="lab" x="1190" y="338" text-anchor="middle">écrit</text>
-    </svg>
+  <div class="body d-cmp rise" style="--i:2">
+    <p class="d-h"></p><p class="d-h d-th">Totale</p><p class="d-h d-th">Incrémentale</p><p class="d-h d-th">Différentielle</p>
+    <p class="d-k">Copie</p><p class="d-c">tout</p><p class="d-c">depuis la dernière sauvegarde</p><p class="d-c">depuis la dernière totale</p>
+    <p class="d-k">Durée</p><p class="d-c">la plus longue</p><p class="d-c"><b class="d-win">la plus courte</b></p><p class="d-c">s'allonge chaque jour</p>
+    <p class="d-k">Place</p><p class="d-c">la plus grande</p><p class="d-c"><b class="d-win">la plus petite</b></p><p class="d-c">grandit chaque jour</p>
+    <p class="d-k">Restauration</p><p class="d-c"><b class="d-win">1 copie</b></p><p class="d-c">totale + chaque incrémentale</p><p class="d-c">totale + dernière différentielle</p>
+    <p class="d-k">Point faible</p><p class="d-c">lente et lourde</p><p class="d-c">une copie perdue casse la chaîne</p><p class="d-c">grossit jusqu'à la totale suivante</p>
   </div>
-  <div class="disc" data-disc="scope">
+  <div class="disc" data-disc="condition">
     <button class="disc-btn" aria-expanded="false" aria-controls="p3">
       <span class="disc-mark" aria-hidden="true"></span>
-      <span class="disc-label">Chaque logiciel et ses sauvegardes</span>
+      <span class="disc-label">Pourquoi une totale régulière</span>
     </button>
     <div class="disc-panel" id="p3" hidden>
-      <div class="row"><span class="k">Kafka</span><span>Réplication : copie continue, pas une sauvegarde. Rétention de 7 jours pour rejouer. MirrorMaker 2 : copie continue vers un autre cluster.</span></div>
-      <div class="row"><span class="k">Flink</span><span>Checkpoint automatique, complet (HashMap) ou incrémental (RocksDB). Savepoint : copie complète déclenchée à la main.</span></div>
-      <div class="row"><span class="k">HDFS</span><span>Réplication des blocs. Snapshot : photo instantanée d'un dossier. DistCp : copie totale, puis seulement les fichiers changés.</span></div>
-      <div class="row"><span class="k">Spark</span><span>Rien à sauvegarder en batch : silver et gold se recalculent depuis bronze.</span></div>
-      <div class="row"><span class="k">Différentielle</span><span>Aucune des quatre briques ne la propose d'elle-même.</span></div>
+      <div class="row"><span class="k">Sans totale</span><span>La chaîne d'incrémentales s'allonge sans fin, et la restauration avec elle.</span></div>
+      <div class="row"><span class="k">Avec une totale par semaine</span><span>On ne recharge jamais plus d'une semaine de copies.</span></div>
     </div>
   </div>
-  <p class="bottom-line rise" style="--i:4"><b>Kafka et la zone bronze de HDFS gardent les données d'origine ; tout le reste se recalcule à partir d'elles.</b></p>
+  <p class="bottom-line rise" style="--i:3"><b>En pratique, on combine : une totale chaque semaine, puis une incrémentale ou une différentielle chaque jour.</b></p>
+  <p class="provenance"><span class="sources sources--one"><svg class="sources-mark" aria-hidden="true"><use href="#i-source"/></svg><span class="sources-box" id="src8"><span class="sources-item"><button class="sources-open" type="button" data-qv="Modèle illustratif" data-file="modele-semaine.md">Modèle illustratif</button></span></span></span></p>
+</section>
+
+<!-- ============================================================ 4 — la chaîne Lambda (A-06) -->
+<section class="slide" data-name="Chaque brique a ses propres sauvegardes" data-stage="3" aria-label="Slide 4">
+  <header>
+    <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Les types de sauvegarde dans la chaîne Lambda</p>
+    <h2 class="headline rise" style="--i:1">Chaque brique a ses propres sauvegardes</h2>
+    <p class="standfirst rise" style="--i:2">La différentielle n'y apparaît pas : aucune des quatre briques ne la propose d'elle-même.</p>
+  </header>
+  <div class="body d-mx rise" style="--i:3">
+    <p class="d-h"></p><p class="d-h">Copie continue</p><p class="d-h">Totale</p><p class="d-h">Incrémentale</p><p class="d-h">Différentielle</p>
+    <p class="d-k">Kafka</p><p class="d-c">réplication sur 3 brokers</p><p class="d-c d-none">aucune</p><p class="d-c">MirrorMaker 2 : les nouveaux messages vers un autre cluster</p><p class="d-c d-none">aucune</p>
+    <p class="d-k">Flink</p><p class="d-c d-none">aucune</p><p class="d-c">checkpoint HashMap · savepoint</p><p class="d-c">checkpoint RocksDB</p><p class="d-c d-none">aucune</p>
+    <p class="d-k">HDFS</p><p class="d-c">réplication des blocs</p><p class="d-c">DistCp, première copie</p><p class="d-c">snapshot · DistCp -update</p><p class="d-c d-none">aucune</p>
+    <p class="d-k">Spark</p><p class="d-c d-span">rien à sauvegarder : silver et gold se recalculent depuis bronze</p>
+  </div>
+  <p class="bottom-line rise" style="--i:4"><b>Kafka et HDFS répliquent en continu, Flink et HDFS font de la totale et de l'incrémentale, Spark recalcule.</b></p>
   <p class="provenance"><span class="sources sources--one"><svg class="sources-mark" aria-hidden="true"><use href="#i-source"/></svg><span class="sources-box" id="src3"><span class="sources-item"><button class="sources-open" type="button" data-qv="Documentation Apache" data-file="doc-apache.md">Documentation Apache</button><template class="qv-src" data-qv="Documentation Apache"><h1>Documentation Apache (mécanismes de sauvegarde)</h1><h2>Kafka</h2><ul><li>Rétention par défaut : <code>log.retention.hours = 168</code>, soit 7 jours. https://kafka.apache.org/documentation/#brokerconfigs_log.retention.hours</li><li>MirrorMaker 2 : copie continue des topics d'un cluster vers un autre (géo-réplication). https://kafka.apache.org/documentation/#georeplication</li></ul><h2>Flink</h2><ul><li>Checkpoints incrémentaux : avec RocksDB, un checkpoint n'envoie que les fichiers créés depuis le précédent ; les fichiers communs sont partagés entre checkpoints. Avec HashMap, chaque checkpoint contient tout l'état. https://nightlies.apache.org/flink/flink-docs-release-1.20/docs/ops/state/large_state_tuning/#incremental-checkpoints</li><li>Savepoints : déclenchés à la main, complets, conservés, pour arrêter, mettre à jour ou migrer un job. https://nightlies.apache.org/flink/flink-docs-release-1.20/docs/ops/state/checkpoints_vs_savepoints/</li></ul><h2>HDFS</h2><ul><li>Réplication par défaut : <code>dfs.replication = 3</code>, soit 3 copies de chaque bloc. https://hadoop.apache.org/docs/r3.4.1/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml</li><li>Snapshots : copie en lecture seule d'un dossier, créée instantanément ; aucun bloc n'est copié, seules les modifications ultérieures sont enregistrées. https://hadoop.apache.org/docs/r3.4.1/hadoop-project-dist/hadoop-hdfs/HdfsSnapshots.html</li><li>DistCp : copie vers un autre cluster ; <code>-update</code> ne copie que les fichiers modifiés ; <code>-diff</code> copie la différence entre deux snapshots. https://hadoop.apache.org/docs/r3.4.1/hadoop-distcp/DistCp.html</li></ul></template></span></span></span></p>
 </section>
 
-<!-- ============================================================ 4 — Kafka (A-04) -->
-<section class="slide" data-name="Kafka réplique, il ne sauvegarde pas" data-stage="3" aria-label="Slide 4">
+<!-- ============================================================ 5 — Kafka (A-04) -->
+<section class="slide" data-name="Kafka réplique, il ne sauvegarde pas" data-stage="4" aria-label="Slide 5">
   <header>
     <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Kafka : réplication, rétention, MirrorMaker 2</p>
     <h2 class="headline rise" style="--i:1">Kafka réplique, il ne sauvegarde pas</h2>
@@ -1983,7 +1984,7 @@ if(p)p.textContent='This browser is missing '+m.join(', ')+". The deck cannot pr
     <div class="d-col">
       <p class="d-colhead">Elle ne couvre pas</p>
       <div class="d-item"><p class="d-item-h">Un topic supprimé par erreur</p><p class="d-item-p">Il disparaît des 3 brokers à la fois.</p></div>
-      <div class="d-item"><p class="d-item-h">La perte de tout le site</p><p class="d-item-p">Il faut MirrorMaker 2 : une copie continue vers un autre cluster.</p></div>
+      <div class="d-item"><p class="d-item-h">La perte de tout le site</p><p class="d-item-p">Il faut MirrorMaker 2 : une copie incrémentale en continu vers un autre cluster.</p></div>
     </div>
     <p class="d-foot">Pour rejouer après une erreur : la rétention garde les messages 7 jours par défaut.</p>
   </div>
@@ -1993,8 +1994,8 @@ if(p)p.textContent='This browser is missing '+m.join(', ')+". The deck cannot pr
 Terminé : 325 événements envoyés, 325 confirmés, 0 erreurs.</pre><p>Topic de test <code>test_misr3</code> (réplication 3, <code>min.insync.replicas=3</code>), kafka2 arrêté : écriture refusée (<code>NOT_ENOUGH_REPLICAS</code>) après 3 essais.</p><p>Réplication 3 : chaque partition existe en 3 copies, une sur chaque broker.</p></template></span><span class="sources-item"><svg class="sources-icon" aria-hidden="true"><use href="#i-source"></use></svg><button class="sources-open" type="button" data-qv="Documentation Apache" data-file="doc-apache.md">Documentation Apache</button></span></span></span></p>
 </section>
 
-<!-- ============================================================ 5 — Flink checkpoints (A-08) -->
-<section class="slide" data-name="Flink se sauvegarde lui-même, en continu" data-stage="4" aria-label="Slide 5">
+<!-- ============================================================ 6 — Flink checkpoints (A-08) -->
+<section class="slide" data-name="Flink se sauvegarde lui-même, en continu" data-stage="5" aria-label="Slide 6">
   <header>
     <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Checkpoints complets et incrémentaux</p>
     <h2 class="headline rise" style="--i:1">Flink se sauvegarde lui-même, en continu</h2>
@@ -2057,8 +2058,8 @@ exactly-once, lecteur read_committed : 40 lignes, 40 expéditions distinctes, 0 
 exactly-once, lecteur read_uncommitted : 42 lignes, 40 expéditions distinctes, 2 doublon(s)</pre><p>40 expéditions bloquées attendues (4 lots × 10, vérité terrain du générateur) : aucune perdue.</p></template></span><span class="sources-item"><svg class="sources-icon" aria-hidden="true"><use href="#i-source"></use></svg><button class="sources-open" type="button" data-qv="Documentation Apache" data-file="doc-apache.md">Documentation Apache</button></span></span></span></p>
 </section>
 
-<!-- ============================================================ 6 — la panne réelle (A-09) -->
-<section class="slide" data-name="35 s d'arrêt, zéro donnée perdue" data-stage="4" aria-label="Slide 6">
+<!-- ============================================================ 7 — la panne réelle (A-09) -->
+<section class="slide" data-name="35 s d'arrêt, zéro donnée perdue" data-stage="5" aria-label="Slide 7">
   <header>
     <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Arrêt du TaskManager pendant l'exercice</p>
     <h2 class="headline rise" style="--i:1">35 s d'arrêt, zéro donnée perdue</h2>
@@ -2097,7 +2098,7 @@ exactly-once, lecteur read_uncommitted : 42 lignes, 40 expéditions distinctes, 
         <text class="name" x="1700" y="140" text-anchor="end">Reprise depuis le n° 22</text>
         <text class="val t-soft" x="1700" y="174" text-anchor="end">23:00:45</text>
         <path class="accent-s" d="M370 390 L370 410 L1525 410 L1525 390" stroke-width="3"/>
-        <text class="lab t-accent" x="947" y="452" text-anchor="middle">Interruption : 35 s (RTO)</text>
+        <text class="lab t-accent" x="947" y="452" text-anchor="middle">Interruption : 35 s</text>
         <path class="accent-s" d="M188 390 L188 410 L355 410" stroke-width="3"/>
         <text class="lab t-accent" x="0" y="452">Relu depuis Kafka : 0 perte</text>
       </g>
@@ -2118,8 +2119,8 @@ exactly-once, lecteur read_uncommitted : 42 lignes, 40 expéditions distinctes, 
   <p class="provenance"><span class="sources sources--one"><svg class="sources-mark" aria-hidden="true"><use href="#i-source"/></svg><span class="sources-box" id="src6"><span class="sources-item"><button class="sources-open" type="button" data-qv="Exercice : panne Flink" data-file="exercice-flink-panne.md">Exercice : panne Flink</button></span></span></span></p>
 </section>
 
-<!-- ============================================================ 7 — HDFS et Spark (A-10) -->
-<section class="slide" data-name="Bronze sauvegardé, silver et gold recalculés" data-stage="5" aria-label="Slide 7">
+<!-- ============================================================ 8 — HDFS et Spark (A-10) -->
+<section class="slide" data-name="Bronze sauvegardé, silver et gold recalculés" data-stage="6" aria-label="Slide 8">
   <header>
     <p class="eyebrow rise" style="--i:0"><span class="tick"></span>HDFS et Spark : la partie batch</p>
     <h2 class="headline rise" style="--i:1">Bronze sauvegardé, silver et gold recalculés</h2>
@@ -2143,11 +2144,11 @@ exactly-once, lecteur read_uncommitted : 42 lignes, 40 expéditions distinctes, 
       <text class="lab t-accent" x="970" y="230" text-anchor="middle">Aucune copie : on relance Spark sur bronze</text>
 
       <text class="name" x="0" y="300">Réplication</text>
-      <text class="val t-soft" x="250" y="300">3 copies en production · 1 dans l'exercice (une seule machine)</text>
+      <text class="val t-soft" x="250" y="300">copie continue : 3 copies en production, 1 dans l'exercice</text>
       <text class="name" x="0" y="360">Snapshot</text>
-      <text class="val t-soft" x="250" y="360">photo instantanée du dossier ; ensuite, seuls les blocs modifiés sont gardés</text>
+      <text class="val t-soft" x="250" y="360">incrémentale : photo instantanée, puis seuls les blocs modifiés</text>
       <text class="name" x="0" y="420">DistCp</text>
-      <text class="val t-soft" x="250" y="420">copie vers un autre cluster : totale, puis seulement les fichiers changés</text>
+      <text class="val t-soft" x="250" y="420">totale vers un autre cluster, puis incrémentale avec -update</text>
     </svg>
   </div>
   <div class="disc" data-disc="condition">
@@ -2172,20 +2173,19 @@ $ hdfs getconf -confKey dfs.replication
 Target Replicas is 3 but found 1 live replica(s)</pre><p>Couches : bronze (brut, tel que reçu), silver et gold recalculées par le notebook Spark à partir de bronze.</p></template></span><span class="sources-item"><svg class="sources-icon" aria-hidden="true"><use href="#i-source"></use></svg><button class="sources-open" type="button" data-qv="Documentation Apache" data-file="doc-apache.md">Documentation Apache</button></span></span></span></p>
 </section>
 
-<!-- ============================================================ 8 — la règle (A-14) -->
-<section class="slide close" data-name="Protégez d'abord ce qui est irremplaçable" data-stage="6" aria-label="Slide 8">
+<!-- ============================================================ 9 — la règle (A-14) -->
+<section class="slide close" data-name="Sauvegardez la source, recalculez le reste" data-stage="7" aria-label="Slide 9">
   <header>
-    <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Avant de choisir une sauvegarde</p>
+    <p class="eyebrow rise" style="--i:0"><span class="tick"></span>Ce qu'il faut retenir</p>
   </header>
   <div class="body d-close">
     <div>
-      <h2 class="headline d-close-h turn" style="--m-rank:94">Protégez d'abord ce qui est irremplaçable</h2>
+      <h2 class="headline d-close-h turn" style="--m-rank:94">Sauvegardez la source, recalculez le reste</h2>
     </div>
   </div>
-  <p class="bottom-line bottom-line--center rise" style="--i:2"><b>Avant de choisir totale, incrémentale ou différentielle, vérifiez si la donnée peut être reconstruite à partir d'une autre.</b></p>
+  <p class="bottom-line bottom-line--center rise" style="--i:2"><b>Une totale puis des incrémentales, réservées aux données que rien ne recalcule : Kafka et bronze.</b></p>
   <p class="provenance"></p>
 </section>
-
 
 <!-- ============================================================ chrome -->
 <nav class="chrome" aria-label="Deck navigation">
@@ -2303,6 +2303,20 @@ Target Replicas is 3 but found 1 live replica(s)</pre><p>Couches : bronze (brut,
 .doc .d-close{display:block;text-align:left;height:auto}
 .doc .d-close-h{font-size:var(--doc-fs-head);max-width:none}
 .doc .d-title{font-size:var(--doc-fs-title)}
+.d-head-a{fill:var(--accent)}
+.d-cmp,.d-mx{display:grid;align-content:start;column-gap:var(--sp-3)}
+.d-cmp{grid-template-columns:calc(250*var(--du)) repeat(3,1fr)}
+.d-mx{grid-template-columns:calc(170*var(--du)) repeat(4,1fr)}
+.d-cmp>p,.d-mx>p{padding:var(--sp-1) 0;border-top:var(--hair) solid var(--line);font-size:var(--fs-small)}
+.d-cmp>.d-h,.d-mx>.d-h{border-top:0;font-family:var(--font-mono);font-size:var(--fs-mono);text-transform:uppercase;color:var(--ink-soft)}
+.d-cmp>.d-th{font-family:var(--font-display);font-size:var(--fs-subhead);text-transform:none;color:var(--ink)}
+.d-k{font-family:var(--font-display);font-size:var(--fs-lead)}
+.d-cmp>.d-k,.d-mx>.d-k{font-size:var(--fs-lead)}
+.d-none{color:var(--ink-faint)}
+.d-span{grid-column:2/-1}
+.d-win{color:var(--accent)}
+.doc .d-cmp,.doc .d-mx{display:block}
+.doc .d-cmp>p,.doc .d-mx>p{border-top:0;padding:0}
 </style>
 
 <script>
@@ -2350,7 +2364,7 @@ Target Replicas is 3 but found 1 live replica(s)</pre><p>Couches : bronze (brut,
   var DECK = 'Sauvegarder une chaîne Lambda';
 
   /* the deck's argument, lit stage by stage (DS-134) */
-  var STAGES = ['Le critère','Les trois types','La carte','Kafka','Flink','HDFS et Spark','La règle'];
+  var STAGES = ['Les trois types','Une semaine','Le comparatif','La chaîne Lambda','Kafka','Flink','HDFS et Spark','La règle'];
   var idx = 0, played = {}, arrived = {}, inDoc = false;
 
   /* ---------------------------------------------------------- stage scaling (DS-060/062) */
@@ -2380,7 +2394,7 @@ Target Replicas is 3 but found 1 live replica(s)</pre><p>Couches : bronze (brut,
      Add a field here rather than reading a slide directly from a renderer. */
   /* the mark is keyed to the STAGE, never to slide content - so it does not matter that
      slide 1 carries no disclosure panel where the other eleven carry one */
-  var STAGE_ICON = ['i-target','i-calendar','i-map','i-split','i-clock','i-lock','i-check'];
+  var STAGE_ICON = ['i-split','i-calendar','i-chart','i-map','i-branch','i-clock','i-lock','i-check'];
 
   /* Back matter is a slide that is not part of the argument - a colophon, an appendix, a sources
      page - and `data-stage="back"` is how it says so (T-108). Before this it had nowhere to go:
