@@ -1,0 +1,12 @@
+$ python B1_mesure.py
+minute             réel |           wm 5 s  délai |          wm 30 s  délai |          wm 60 s  délai
+2026-11-26 20:49      5 |      1 (-80.0 %)  32.8s |      1 (-80.0 %)  32.7s |      5 (- 0.0 %)  60.4s 
+2026-11-26 20:50   1430 |   1347 (- 5.8 %)   5.6s |   1424 (- 0.4 %)  30.5s |   1430 (- 0.0 %)  60.4s 
+2026-11-26 20:51   2895 |   2821 (- 2.6 %)   5.4s |   2890 (- 0.2 %)  30.5s |   2895 (- 0.0 %)  60.5s 
+2026-11-26 20:52   2897 |   2834 (- 2.2 %)   5.6s |   2891 (- 0.2 %)  30.4s |   2897 (- 0.0 %)  60.7s 
+2026-11-26 20:53   2926 |   2844 (- 2.8 %)   5.3s |   2921 (- 0.2 %)  30.5s |   2926 (- 0.0 %)  60.4s 
+2026-11-26 20:54   2886 |   2815 (- 2.5 %)   5.5s |   2880 (- 0.2 %)  30.3s |         non émis        
+
+réel = commandes de montant > 0 réellement produites pour cette minute (relecture du topic) ;
+(-x %) = commandes perdues car arrivées après le watermark ; délai = émission - fin de minute.
+

@@ -1,0 +1,39 @@
+$ wc -l commandes_exam1.csv
+12485 commandes_exam1.csv
+
+$ mkdir split && split -l 600 -d -a 2 --additional-suffix=.csv commandes_exam1.csv split/commandes_part_ && ls split | head -3 && ls split | wc -l
+commandes_part_00.csv
+commandes_part_01.csv
+commandes_part_02.csv
+...
+21
+
+$ hdfs dfs -mkdir -p /data/raw/commandes_split && hdfs dfs -put split/*.csv /data/raw/commandes_split/
+
+$ hdfs dfs -count -v -h /data/raw/commandes_split /data/raw/commandes/ingestion_date=2026-11-02
+   DIR_COUNT   FILE_COUNT       CONTENT_SIZE PATHNAME
+           1           21            987.4 K /data/raw/commandes_split
+           1            1            987.4 K /data/raw/commandes/ingestion_date=2026-11-02
+
+$ hdfs fsck /data/raw/commandes_split | grep -E 'Total files|Total blocks'
+ Total files:	21
+ Total blocks (validated):	21 (avg. block size 48148 B)
+
+$ hdfs dfs -mkdir -p /data/raw/commandes_compacte && hdfs dfs -cat /data/raw/commandes_split/*.csv | hdfs dfs -put - /data/raw/commandes_compacte/commandes_exam1.csv
+
+$ hdfs dfs -count -v /data/raw/commandes_split /data/raw/commandes_compacte
+   DIR_COUNT   FILE_COUNT       CONTENT_SIZE PATHNAME
+           1           21            1011127 /data/raw/commandes_split
+           1            1            1011127 /data/raw/commandes_compacte
+
+$ hdfs fsck /data/raw/commandes_compacte | grep -E 'Total files|Total blocks'
+ Total files:	1
+ Total blocks (validated):	1 (avg. block size 1011127 B)
+
+$ hdfs dfs -cat /data/raw/commandes_compacte/commandes_exam1.csv | wc -l   # contrôle : même nombre de lignes
+12485
+
+$ hdfs dfs -cat /data/raw/commandes/ingestion_date=2026-11-02/commandes_exam1.csv | md5sum ; hdfs dfs -cat /data/raw/commandes_compacte/commandes_exam1.csv | md5sum
+original : e7d354f2695dc4d904a220d4e631d575  -
+compacté : e7d354f2695dc4d904a220d4e631d575  -
+

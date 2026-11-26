@@ -1,0 +1,41 @@
+id_produit,nom_produit,famille,prix_catalogue
+P001,Ordinateur portable,Informatique,899.0
+P002,Écran 27 pouces,Informatique,289.0
+P003,Clavier,Informatique,39.9
+P004,Souris,Informatique,24.9
+P005,Station d'accueil,Informatique,179.0
+P006,Disque SSD,Informatique,119.0
+P007,Webcam,Informatique,69.9
+P008,Casque audio,Informatique,89.0
+P009,Routeur,Réseau,249.0
+P010,Switch 24 ports,Réseau,329.0
+P011,Borne Wi-Fi,Réseau,159.0
+P012,Câble RJ45,Réseau,7.9
+P013,Pare-feu,Réseau,690.0
+P014,Bureau,Mobilier,349.0
+P015,Chaise ergonomique,Mobilier,279.0
+P016,Armoire,Mobilier,420.0
+P017,Caisson,Mobilier,149.0
+P018,Lampe de bureau,Mobilier,45.0
+P019,Perceuse,Outillage,129.0
+P020,Visseuse,Outillage,99.0
+P021,Scie circulaire,Outillage,189.0
+P022,Meuleuse,Outillage,85.0
+P023,Coffret d'outils,Outillage,75.0
+P024,Niveau laser,Outillage,139.0
+P025,Escabeau,Outillage,89.0
+P026,Ramette papier,Consommables,5.9
+P027,Cartouche d'encre,Consommables,34.9
+P028,Toner,Consommables,79.0
+P029,Étiquettes,Consommables,14.9
+P030,Carton d'emballage,Consommables,2.5
+P031,Ruban adhésif,Consommables,3.2
+P032,Gants de protection,Consommables,6.5
+P033,Piles,Consommables,9.9
+P034,Film étirable,Consommables,18.0
+P035,Marqueurs,Consommables,7.5
+P036,Agrafes,Consommables,2.9
+P037,Enveloppes,Consommables,8.9
+P038,Bloc-notes,Consommables,3.9
+P039,Classeurs,Consommables,4.5
+P040,Stylos,Consommables,6.9

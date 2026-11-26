@@ -1,0 +1,17 @@
+# 3e essai (exactly-once) : checkpoints toutes les 10 s, le dernier à 21:07:58.415
+# la fenêtre se ferme vers xx:05,5 (watermark 5 s) et le checkpoint suivant tombe à xx:08,3 :
+# on provoque un arrêt brutal du TaskManager entre les deux, donc AVANT le commit de la transaction.
+# messages physiquement présents dans le topic (validés ou non) : 1098
+# 21:08:06.505 : la fenêtre 21:07 vient d'être calculée ; messages dans le topic : 1098 (+0 : en exactly-once, rien n'est encore écrit dans le topic, même non validé ; tout part au checkpoint)
+$ docker compose kill taskmanager        (21:08:06.505)   # arrêt brutal = panne
+21:08:09  job RUNNING | tâches : {'RUNNING': 2}
+21:08:12  job RUNNING | tâches : {'RUNNING': 2}
+21:08:15  job RUNNING | tâches : {'RUNNING': 2}
+$ docker compose start taskmanager       (21:08:15.847)
+21:08:20  job RUNNING | tâches : {'RUNNING': 2}
+21:08:24  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:08:28  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:08:32  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:08:36  job RUNNING | tâches : {'RUNNING': 1, 'INITIALIZING': 1}
+21:08:40  job RUNNING | tâches : {'RUNNING': 2}
+# job restauré depuis le checkpoint n°25 ; messages physiquement présents dans le topic : 1428

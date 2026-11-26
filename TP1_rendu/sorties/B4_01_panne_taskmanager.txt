@@ -1,0 +1,32 @@
+# job d'alertes : e331d749807f9148e1b75b6af6d78fc3
+$ curl localhost:8081/jobs/<id>   (état avant la panne, 20:59:26)
+job RUNNING | tâches : {'RUNNING': 2}
+dernier checkpoint terminé : n° 14 à 20:59:17 | restauré depuis : n° - | total terminés : 14
+
+# alertes déjà écrites dans alertes_exam : 544 ; on attend la prochaine émission...
+# 21:00:09 : nouvelle émission détectée (544 -> 868 alertes). Panne juste après :
+$ docker compose stop taskmanager
+ Container kit-taskmanager-1 Stopping 
+ Container kit-taskmanager-1 Stopped 
+
+21:00:14  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:00:18  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:00:22  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:00:26  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:00:30  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:00:34  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+
+$ docker compose start taskmanager
+ Container kit-taskmanager-1 Starting 
+ Container kit-taskmanager-1 Started 
+21:00:51  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:00:55  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:00:59  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:01:03  job RUNNING | tâches : {'RUNNING': 2}
+21:01:07  job RUNNING | tâches : {'RUNNING': 2}
+21:01:11  job RUNNING | tâches : {'RUNNING': 2}
+21:01:15  job RUNNING | tâches : {'RUNNING': 2}
+21:01:19  job RUNNING | tâches : {'RUNNING': 2}
+
+dernier checkpoint terminé : n° 21 à 21:01:13 | restauré depuis : n° 19 | total terminés : 21
+# alertes dans le topic après reprise : 1201

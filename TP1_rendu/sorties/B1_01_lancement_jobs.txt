@@ -1,0 +1,48 @@
+$ docker compose exec jobmanager ./bin/sql-client.sh -i /opt/sql/init.sql -f /opt/sql/B1_watermarks.sql
+> ) WITH ('connector' = 'kafka', 'topic' = 'ca_wm30',
+>         'properties.bootstrap.servers' = 'kafka1:9092,kafka2:9092,kafka3:9092', 'format' = 'json')
+[INFO] Execute statement succeeded.
+
+Flink SQL> 
+> CREATE TABLE IF NOT EXISTS ca_wm60 (
+>   variante STRING, w_start TIMESTAMP(3), w_end TIMESTAMP(3), nb BIGINT, total DOUBLE, emis_a TIMESTAMP_LTZ(3)
+> ) WITH ('connector' = 'kafka', 'topic' = 'ca_wm60',
+>         'properties.bootstrap.servers' = 'kafka1:9092,kafka2:9092,kafka3:9092', 'format' = 'json')
+[INFO] Execute statement succeeded.
+
+Flink SQL> 
+> -- Trois jobs identiques, seule la source (donc le watermark) change.
+> -- Même règle que le job ca_minute du TP3 : on ne compte que les montants > 0.
+> INSERT INTO ca_wm5
+> SELECT 'wm5', window_start, window_end, COUNT(*), ROUND(SUM(amount), 2), CURRENT_TIMESTAMP
+> FROM TABLE(TUMBLE(TABLE commandes, DESCRIPTOR(ts), INTERVAL '1' MINUTE))
+[INFO] Submitting SQL update statement to the cluster...
+
+
+[INFO] SQL update statement has been successfully submitted to the cluster:
+
+Job ID: a7481d185b69453137f0db12b2e46434
+Flink SQL> 
+> INSERT INTO ca_wm30
+> SELECT 'wm30', window_start, window_end, COUNT(*), ROUND(SUM(amount), 2), CURRENT_TIMESTAMP
+> FROM TABLE(TUMBLE(TABLE commandes_wm30, DESCRIPTOR(ts), INTERVAL '1' MINUTE))
+[INFO] Submitting SQL update statement to the cluster...
+
+
+[INFO] SQL update statement has been successfully submitted to the cluster:
+
+Job ID: 10b96219750d411146282e74cf0d45c4
+Flink SQL> 
+> INSERT INTO ca_wm60
+> SELECT 'wm60', window_start, window_end, COUNT(*), ROUND(SUM(amount), 2), CURRENT_TIMESTAMP
+> FROM TABLE(TUMBLE(TABLE commandes_wm60, DESCRIPTOR(ts), INTERVAL '1' MINUTE))
+[INFO] Submitting SQL update statement to the cluster...
+
+
+[INFO] SQL update statement has been successfully submitted to the cluster:
+
+Job ID: 4442fc62274471d2e495e1f246664fd3
+Flink SQL> 
+Shutting down the session...
+done.
+

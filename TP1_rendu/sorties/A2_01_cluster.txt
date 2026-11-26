@@ -1,0 +1,21 @@
+$ docker compose ps
+NAME      IMAGE                STATUS         PORTS
+kafka1    apache/kafka:3.9.0   Up 2 minutes   9092/tcp, 0.0.0.0:19092->19092/tcp
+kafka2    apache/kafka:3.9.0   Up 2 minutes   9092/tcp, 0.0.0.0:29092->29092/tcp
+kafka3    apache/kafka:3.9.0   Up 2 minutes   9092/tcp, 0.0.0.0:39092->39092/tcp
+
+$ docker exec kafka1 /opt/kafka/bin/kafka-metadata-quorum.sh --bootstrap-server kafka1:9092 describe --status
+ClusterId:              15tn9B8xQlW9_71j8CXGHA
+LeaderId:               3
+LeaderEpoch:            1
+HighWatermark:          287
+MaxFollowerLag:         0
+MaxFollowerLagTimeMs:   338
+CurrentVoters:          [{"id": 1, "directoryId": null, "endpoints": ["CONTROLLER://kafka1:9093"]}, {"id": 2, "directoryId": null, "endpoints": ["CONTROLLER://kafka2:9093"]}, {"id": 3, "directoryId": null, "endpoints": ["CONTROLLER://kafka3:9093"]}]
+CurrentObservers:       []
+
+$ kafka-broker-api-versions.sh --bootstrap-server kafka1:9092 | grep id
+kafka2:9092 (id: 2 rack: null)
+kafka3:9092 (id: 3 rack: null)
+kafka1:9092 (id: 1 rack: null)
+

@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>TP 1 : de l'ingestion au KPI</title>
+<style>
+@page { size: 1280px 720px; margin: 0; }
+:root { --ink:#1f2328; --muted:#57606a; --line:#d8dee4; --accent:#0b5cad; --soft:#f3f6f9;
+        --red:#c9363e; --green:#2f8a3e; --orange:#d97706; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Inter","DejaVu Sans",Arial,sans-serif; color: var(--ink); background: #fff; }
+section { width: 1280px; height: 720px; padding: 46px 60px 40px; position: relative; overflow: hidden; break-after: page; }
+section::after { content: attr(data-n); position: absolute; right: 30px; bottom: 18px; font-size: 13px; color: #9aa4ae; }
+.tag { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+       color: var(--accent); margin-bottom: 6px; }
+h1 { font-size: 36px; margin: 0 0 18px; line-height: 1.15; }
+h2 { font-size: 21px; margin: 0 0 8px; }
+p, li { font-size: 21px; line-height: 1.45; margin: 0 0 8px; }
+ul { margin: 0; padding-left: 22px; }
+.muted { color: var(--muted); }
+.small { font-size: 18px; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; align-items: start; }
+.cols-3-2 { display: grid; grid-template-columns: 3fr 2fr; gap: 30px; align-items: start; }
+.cols-2-3 { display: grid; grid-template-columns: 2fr 3fr; gap: 30px; align-items: start; }
+img { max-width: 100%; border-radius: 6px; }
+.shadow { box-shadow: 0 2px 10px rgba(0,0,0,.15); }
+.big { font-size: 46px; font-weight: 800; color: var(--accent); line-height: 1.05; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 6px 0 20px; }
+.kpi { background: var(--soft); border-radius: 10px; padding: 16px 18px; }
+.kpi b { display: block; font-size: 30px; color: var(--accent); }
+.kpi span { font-size: 16px; color: var(--muted); }
+table { border-collapse: collapse; width: 100%; font-size: 19px; }
+th, td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: left; }
+th { background: var(--soft); font-size: 16px; }
+td.n, th.n { text-align: right; }
+.bad { color: var(--red); font-weight: 700; } .good { color: var(--green); font-weight: 700; }
+.box { border-left: 4px solid var(--accent); background: var(--soft); padding: 12px 16px; border-radius: 0 8px 8px 0; margin-top: 12px; }
+.box p { font-size: 18.5px; margin: 0; }
+code { font-family: "DejaVu Sans Mono", monospace; font-size: .86em; background: var(--soft); padding: 1px 5px; border-radius: 4px; }
+.title { background: linear-gradient(135deg, #0b5cad 0%, #083d73 100%); color: #fff; display: flex; flex-direction: column; justify-content: center; }
+.title h1 { font-size: 56px; margin-bottom: 14px; }
+.title p { font-size: 23px; color: #d7e6f7; }
+.title::after { color: #9cc0e6; }
+.plan { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 14px; }
+.plan div { background: var(--soft); border-radius: 8px; padding: 14px; font-size: 17px; }
+.plan b { display: block; font-size: 22px; color: var(--accent); }
+</style></head><body>
+
+<section class="title" data-n="1">
+  <div class="tag" style="color:#9cc0e6">Kafka · Flink · HDFS · Spark</div>
+  <h1>TP 1 : de l'ingestion au KPI</h1>
+  <p>Pourquoi le chiffre d'affaires temps réel ne correspond pas au chiffre consolidé,<br>et comment le chiffrer à l'euro près.</p>
+</section>
+
+<section data-n="2">
+  <div class="tag">Contexte</div>
+  <h1>La mission</h1>
+  <p>GlobalTech Industries : 100 entrepôts, chaque commande publiée dans Kafka. Flink calcule le CA par minute en continu,
+     Spark produit le chiffre consolidé. <b>Les deux chiffres ne correspondent pas.</b></p>
+  <div class="plan">
+    <div><b>A</b>Kafka : dimensionner, tenir une panne</div>
+    <div><b>B</b>Flink : watermarks, alertes, doublons</div>
+    <div><b>C</b>HDFS : le piège des petits fichiers</div>
+    <div><b>D</b>Spark : qualité, pipeline, skew</div>
+    <div><b>E</b>KPI et réconciliation de l'écart</div>
+    <div><b>F</b>Architecture et risques</div>
+  </div>
+  <div class="box" style="margin-top:22px"><p><b>Comment j'ai travaillé :</b> le kit du cours sous Docker (3 brokers Kafka KRaft, Flink 1.20),
+  HDFS dans un conteneur Hadoop, et Spark dans un notebook PySpark compatible Colab. Les données d'examen n'étaient pas disponibles :
+  un jeu de test au même format (12 484 lignes de commandes, avec les mêmes anomalies) a été généré par un script à graine fixe.</p></div>
+</section>
+
+<section data-n="3">
+  <div class="tag">Partie A1</div>
+  <h1>Dimensionner Kafka : 20 000 msg/s de 1 Ko</h1>
+  <div class="kpis">
+    <div class="kpi"><b>20 Mo/s</b><span>débit entrant</span></div>
+    <div class="kpi"><b>40 Mo/s</b><span>réplication (RF 3 = 2 copies)</span></div>
+    <div class="kpi"><b>60 Mo/s</b><span>vers les consommateurs (3 lectures complètes)</span></div>
+    <div class="kpi"><b>15,6 To</b><span>sur 3 jours, réplication comprise (5,2 To brut)</span></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h2>12 partitions</h2>
+      <p class="small">Au moins 10, sinon certains des 10 consommateurs du groupe n'ont rien à lire. 12 laisse 20 % de marge et se répartit bien sur 3 ou 4 brokers.</p>
+      <h2 style="margin-top:14px">4 brokers</h2>
+      <p class="small">15,6 To ÷ 5,6 To utiles par broker = 3 brokers, plus 1 pour tenir une panne ou une maintenance (N+1).</p>
+    </div>
+    <div>
+      <h2>Aucune perte tolérée</h2>
+      <ul class="small">
+        <li>producteur : <code>acks=all</code>, <code>enable.idempotence=true</code>, retries illimités</li>
+        <li>topic : <code>replication.factor=3</code>, <code>min.insync.replicas=2</code></li>
+        <li><code>unclean.leader.election.enable=false</code></li>
+        <li>rétention 3 jours, répliques sur des baies différentes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section data-n="4">
+  <div class="tag">Partie A2</div>
+  <h1>Un broker tombe : écriture refusée, pas perdue</h1>
+  <img class="shadow" src="../captures/term_A2_04_ecriture_acks_all_echec.png" style="width:100%">
+  <div class="cols" style="margin-top:18px">
+    <div>
+      <p><b>1.</b> Topic <code>exam_cmd</code> : 6 partitions, RF 3, <code>min.insync.replicas=3</code>.</p>
+      <p><b>2.</b> J'arrête kafka3 : l'ISR passe à 2 répliques.</p>
+      <p><b>3.</b> <code>acks=all</code> exige un ISR d'au moins 3 : <span class="bad">NOT_ENOUGH_REPLICAS</span>.</p>
+    </div>
+    <div>
+      <p><b>4.</b> <code>min.insync.replicas=2</code> : <span class="good">l'écriture passe</span>, et chaque message est encore sur 2 brokers.</p>
+      <p><b>5.</b> kafka3 redémarre et l'ISR revient à 3 en 4 s.</p>
+    </div>
+  </div>
+  <div class="box"><p>À retenir : <b>min.insync.replicas = RF − 1</b>, pour tolérer une panne sans perte et sans bloquer les écritures.</p></div>
+</section>
+
+<section data-n="5">
+  <div class="tag">Partie B1 – B2</div>
+  <h1>Watermark : on choisit entre complétude et latence</h1>
+  <div class="cols-3-2">
+    <div>
+      <table>
+        <tr><th>Minute 20:52</th><th class="n">Commandes comptées</th><th class="n">Perdues</th><th class="n">Délai d'émission</th></tr>
+        <tr><td>Réel (topic relu)</td><td class="n">2 897</td><td class="n">–</td><td class="n">–</td></tr>
+        <tr><td>Watermark 5 s</td><td class="n">2 834</td><td class="n bad">−2,2 %</td><td class="n">5,6 s</td></tr>
+        <tr><td>Watermark 30 s</td><td class="n">2 891</td><td class="n">−0,2 %</td><td class="n">30,4 s</td></tr>
+        <tr><td>Watermark 60 s</td><td class="n">2 897</td><td class="n good">0 %</td><td class="n">60,7 s</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:10px">Trois jobs identiques sur le même topic, seul le watermark change. Les topics de sortie sont en <code>LogAppendTime</code>, ce qui donne l'heure exacte d'émission. Générateur : 10 % d'événements en retard, jusqu'à 40 s.</p>
+    </div>
+    <div>
+      <h2>Mon choix</h2>
+      <p><b>Fraude : 5 s.</b> Une alerte doit être immédiate ; rater 2 % des événements tardifs est acceptable.</p>
+      <p><b>Rapport de fin de journée : ≥ retard maximal (60 s)</b>, ou mieux, le batch Spark, qui voit tout.</p>
+    </div>
+  </div>
+</section>
+
+<section data-n="6">
+  <div class="tag">Partie B3 – B4</div>
+  <h1>Une panne de TaskManager peut créer des doublons</h1>
+  <div class="cols">
+    <div>
+      <p class="small">Job d'alertes « plus de 3 commandes par client et par minute » vers <code>alertes_exam</code>. J'arrête le TaskManager : le job passe en <b>RESTARTING</b> (plus aucun slot), puis repart <b>depuis le dernier checkpoint</b>.</p>
+      <table style="font-size:18px">
+        <tr><th>Essai</th><th>Moment de la panne</th><th class="n">Doublons</th></tr>
+        <tr><td>1 (at-least-once)</td><td>après un checkpoint déjà fait</td><td class="n">0</td></tr>
+        <tr><td>2 (at-least-once)</td><td>entre l'émission et le checkpoint</td><td class="n bad">338</td></tr>
+        <tr><td>3 (exactly-once)</td><td>entre le calcul et le checkpoint</td><td class="n good">0</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:8px">Vérification : clé <code>(customer_id, w_start)</code> comptée sur tout le topic.</p>
+    </div>
+    <div>
+      <div class="big" style="font-size:40px">338 doublons</div>
+      <p class="muted">quand la panne tombe entre l'émission et le checkpoint : toute la minute 21:01 a été réécrite</p>
+      <div class="box"><p><b>Exactly-once :</b> <code>sink.delivery-guarantee='exactly-once'</code> + transactions Kafka validées au checkpoint + lecteurs en <code>read_committed</code>.<br><b>Coût :</b> résultats visibles au checkpoint (9,1 s au lieu de 5,5 s), plus de charge Kafka, et tous les lecteurs doivent lire en read_committed.</p></div>
+    </div>
+  </div>
+</section>
+
+<section data-n="7">
+  <div class="tag">Partie C</div>
+  <h1>HDFS : les petits fichiers saturent le NameNode</h1>
+  <div class="cols">
+    <div>
+      <div class="big">26,2 M</div><p class="muted">fichiers = 100 entrepôts × 1 440 min × 182 jours</p>
+      <div class="big" style="margin-top:10px">7,9 Go</div><p class="muted">de mémoire NameNode (2 objets × 150 o par fichier)</p>
+      <div class="box"><p><b>1 fichier par entrepôt et par heure</b> : 436 800 fichiers, 60 fois moins, environ 131 Mo.
+      Pour Kafka → HDFS : accumuler avant d'écrire, fermer les fichiers à 128 Mo–1 Go ou toutes les heures, partitionner par date et heure, compacter chaque nuit.</p></div>
+    </div>
+    <div>
+      <table>
+        <tr><th>Manipulation</th><th class="n">Fichiers</th><th class="n">Blocs</th><th class="n">Objets</th></tr>
+        <tr><td>CSV d'origine (fsck)</td><td class="n">1</td><td class="n">1</td><td class="n">2</td></tr>
+        <tr><td>split -l 600</td><td class="n bad">21</td><td class="n bad">21</td><td class="n bad">42</td></tr>
+        <tr><td>après compaction</td><td class="n good">1</td><td class="n good">1</td><td class="n good">2</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:10px">Même contenu (même md5), mais 21 fois plus d'objets. fsck : 1 bloc, réplication effective 1 (un seul DataNode, comme sur Colab).
+      Arborescence : <code>/data/raw/commandes/ingestion_date=2026-11-02</code>, <code>/data/curated</code>, <code>/data/analytics</code>, <code>/data/rejects</code>.</p>
+    </div>
+  </div>
+</section>
+
+<section data-n="8">
+  <div class="tag">Partie D1 – D2</div>
+  <h1>Spark : contrôle qualité puis pipeline propre</h1>
+  <div class="cols">
+    <div>
+      <table style="font-size:18px">
+        <tr><th>Contrôle (un seul <code>agg</code>)</th><th class="n">Lignes</th><th class="n">%</th></tr>
+        <tr><td>lignes</td><td class="n">12 484</td><td class="n">100</td></tr>
+        <tr><td>doublons sur id_commande</td><td class="n">377</td><td class="n">3,02</td></tr>
+        <tr><td>pays NULL</td><td class="n">190</td><td class="n">1,52</td></tr>
+        <tr><td>prix NULL</td><td class="n">149</td><td class="n">1,19</td></tr>
+        <tr><td>quantité ≤ 0</td><td class="n">249</td><td class="n">1,99</td></tr>
+        <tr><td>dates invalides (+ 12 vides)</td><td class="n">88</td><td class="n">0,70</td></tr>
+      </table>
+    </div>
+    <div>
+      <p class="small">Lecture en texte avec un schéma imposé, pour contrôler les conversions. Dédoublonnage : <b>première arrivée</b> par id_commande. Un <b>motif de rejet</b> par ligne, dans l'ordre pays → quantité → prix → date.</p>
+      <div class="big" style="font-size:38px">11 449 + 658 = 12 107</div>
+      <p class="muted">propres + rejets = commandes distinctes, vérifié en relisant les deux dossiers Parquet écrits</p>
+    </div>
+  </div>
+</section>
+
+<section data-n="9">
+  <div class="tag">Partie D3 – D4</div>
+  <h1>Un produit fait 40 % des lignes : skew, corrigé par broadcast</h1>
+  <div class="cols-2-3">
+    <div>
+      <img src="../captures/D3_skew_partitions.png">
+      <p class="small">SortMergeJoin, 4 Exchange. Après <code>repartition('id_produit')</code> : 38 partitions non vides sur 200, et la plus grosse (P007) pèse <b>25,8 fois</b> la médiane.</p>
+    </div>
+    <div>
+      <table style="font-size:18px">
+        <tr><th>Mesuré sur 1,14 M lignes</th><th class="n">Avant (SMJ)</th><th class="n">Broadcast</th></tr>
+        <tr><td>Exchange (shuffle)</td><td class="n">3</td><td class="n">1</td></tr>
+        <tr><td>lignes envoyées en shuffle</td><td class="n">1 144 980</td><td class="n">20</td></tr>
+        <tr><td>tâche la plus chargée</td><td class="n">461 101</td><td class="n">286 226</td></tr>
+        <tr><td>déséquilibre max / médiane</td><td class="n bad">25,8</td><td class="n good">1,0</td></tr>
+        <tr><td>durée</td><td class="n">1,45 s</td><td class="n good">0,73 s</td></tr>
+      </table>
+      <div class="box"><p><b>Pourquoi le broadcast :</b> la table produits fait 40 lignes. On l'envoie à chaque tâche et les commandes ne sont plus redistribuées : le skew disparaît. Le salting ne vaut que si les deux tables sont grosses, et l'AQE ne découpe pas des partitions aussi petites.</p></div>
+    </div>
+  </div>
+</section>
+
+<section data-n="10">
+  <div class="tag">Partie E1</div>
+  <h1>Couche gold</h1>
+  <div class="kpis">
+    <div class="kpi"><b>3,87 M€</b><span>CA consolidé</span></div>
+    <div class="kpi"><b>11 449</b><span>commandes propres</span></div>
+    <div class="kpi"><b>5,43 %</b><span>taux de rejet (658 / 12 107)</span></div>
+    <div class="kpi"><b>38,6 %</b><span>du CA réalisé en France</span></div>
+  </div>
+  <div class="cols">
+    <table style="font-size:18px">
+      <tr><th>Pays</th><th class="n">CA (€)</th><th class="n">Part</th></tr>
+      <tr><td>FR</td><td class="n">1 491 084</td><td class="n">38,6 %</td></tr>
+      <tr><td>DE</td><td class="n">581 280</td><td class="n">15,0 %</td></tr>
+      <tr><td>BE</td><td class="n">459 769</td><td class="n">11,9 %</td></tr>
+      <tr><td>ES · IT · CH · MA · TN</td><td class="n">1 333 380</td><td class="n">34,5 %</td></tr>
+    </table>
+    <table style="font-size:18px">
+      <tr><th>Famille</th><th class="n">CA (€)</th><th class="n">Part</th></tr>
+      <tr><td>Informatique</td><td class="n">1 880 674</td><td class="n">48,7 %</td></tr>
+      <tr><td>Réseau</td><td class="n">748 151</td><td class="n">19,4 %</td></tr>
+      <tr><td>Mobilier</td><td class="n">640 867</td><td class="n">16,6 %</td></tr>
+      <tr><td>Outillage · Consommables</td><td class="n">595 821</td><td class="n">15,4 %</td></tr>
+    </table>
+  </div>
+  <p class="small muted" style="margin-top:14px">Quatre tables Parquet (ca_par_pays, ca_par_famille, indicateurs, rejets_par_motif), 1 fichier chacune, déposées dans <code>/data/analytics</code>.</p>
+</section>
+
+<section data-n="11">
+  <div class="tag">Partie E2</div>
+  <h1>L'écart Flink / Spark, expliqué à l'euro près</h1>
+  <div class="cols-3-2">
+    <img src="../captures/E2_cascade_ecart.png">
+    <div>
+      <p class="small"><b>Méthode :</b> je rejoue les règles Flink ligne par ligne sur les données brutes. Elles redonnent <b>exactement</b> le fichier Flink (120 minutes, 0 € d'écart), puis je compare avec les règles Spark.</p>
+      <table style="font-size:17.5px">
+        <tr><td>doublons (Flink ne dédoublonne pas)</td><td class="n">+96 433 €</td></tr>
+        <tr><td>pays absent (Flink ne contrôle pas)</td><td class="n">+54 915 €</td></tr>
+        <tr><td>événements tardifs (> 5 s)</td><td class="n bad">−307 514 €</td></tr>
+        <tr><th>Écart total</th><th class="n">−156 166 €</th></tr>
+      </table>
+      <p class="small" style="margin-top:8px">L'écart net de −4 % <b>cache près de 12 % d'écarts bruts</b> qui se compensent en partie.</p>
+    </div>
+  </div>
+</section>
+
+<section data-n="12">
+  <div class="tag">Partie E2 – E4</div>
+  <h1>Recommandation et définition du KPI</h1>
+  <div class="cols">
+    <div>
+      <h2>Réduire l'écart</h2>
+      <ul class="small">
+        <li><b>Dédoublonner dans Flink</b> sur id_commande : −2,5 % d'écart</li>
+        <li><b>Mêmes règles qualité</b> dans les deux chemins : −1,4 %</li>
+        <li><b>Événements tardifs :</b> retard médian 46 s, maximum 116 s. Garder 5 s pour l'affichage, mais <b>corriger les minutes</b> quand les données tardives arrivent (ou watermark de 120 s : 0 % perdu)</li>
+        <li>Afficher Flink comme <b>provisoire</b> et réconcilier chaque jour</li>
+      </ul>
+    </div>
+    <div>
+      <h2>KPI « chiffre d'affaires »</h2>
+      <table style="font-size:17px">
+        <tr><td><b>Formule</b></td><td>Σ quantité × prix unitaire (€)</td></tr>
+        <tr><td><b>Inclus</b></td><td>commandes distinctes et valides, datées par l'événement, retards compris</td></tr>
+        <tr><td><b>Exclus</b></td><td>doublons, rejets (tracés avec leur motif)</td></tr>
+        <tr><td><b>Source de vérité</b></td><td><b>Spark (gold)</b> ; Flink = temps réel provisoire</td></tr>
+        <tr><td><b>Fraîcheur</b></td><td>Flink &lt; 70 s ; Spark J+1 avant 8 h</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:8px">E3 (option lake) : 3 requêtes Spark SQL sur la gold + dictionnaire de données (dans le compte rendu).</p>
+    </div>
+  </div>
+</section>
+
+<section data-n="13" style="padding-top:34px">
+  <div class="tag">Partie F</div>
+  <h1 style="margin-bottom:8px">Architecture de bout en bout</h1>
+  <img src="../captures/F_architecture.png" style="max-height:545px;display:block;margin:0 auto">
+</section>
+
+<section data-n="14">
+  <div class="tag">Partie F</div>
+  <h1>Trois risques, une amélioration</h1>
+  <table style="font-size:19px">
+    <tr><th>Risque</th><th>Parade</th></tr>
+    <tr><td><b>Panne de broker</b> : écritures bloquées ou perte</td><td>RF 3, min.insync 2, acks=all, idempotence, alerte sur les partitions sous-répliquées (A2)</td></tr>
+    <tr><td><b>Doublons, chiffres qui divergent</b></td><td>Flink exactly-once + read_committed, dédoublonnage dans les deux chemins, réconciliation quotidienne (B4, E2)</td></tr>
+    <tr><td><b>Petits fichiers HDFS</b> : NameNode saturé</td><td>dépôt par taille et par heure, partitions par date, compaction nocturne (C)</td></tr>
+  </table>
+  <div class="box" style="margin-top:22px"><p><b>Amélioration :</b> un seul job Flink « qualité » (dédoublonnage + règles de rejet) écrit un topic <code>commandes_propres</code> en exactly-once, lu à la fois par le temps réel et par le dépôt HDFS. Les écarts dus aux doublons et au pays disparaissent par construction. Les agrégats vont ensuite dans une table qui accepte les mises à jour (Iceberg, Delta ou Paimon) pour corriger les minutes avec les données tardives.</p></div>
+</section>
+
+<section data-n="15" class="title">
+  <h1>Ce que je retiens</h1>
+  <p style="font-size:22px;line-height:1.7">
+  1. Une panne doit bloquer une écriture, jamais la perdre (<code style="background:#ffffff22;color:#fff">min.insync.replicas</code>).<br>
+  2. Le watermark se règle selon l'usage : alerte ou rapport.<br>
+  3. Les doublons viennent des reprises : exactly-once ou lecture idempotente.<br>
+  4. Un écart de KPI se décompose, se chiffre et se corrige à la source.</p>
+  <p style="margin-top:20px">Questions ?</p>
+</section>
+
+</body></html>

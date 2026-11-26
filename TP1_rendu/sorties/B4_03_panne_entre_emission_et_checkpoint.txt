@@ -1,0 +1,21 @@
+# 2e essai. Alertes dans le topic : 1201. Dernier checkpoint : n°26 à 21:02:03.275
+# 21:02:05.561 : émission de la fenêtre détectée (1201 -> 1539 alertes) ; dernier checkpoint terminé : n°26 à 21:02:03.275, donc AVANT l'émission
+$ docker compose stop taskmanager        (21:02:06.071)
+Container kit-taskmanager-1 Stopping 
+ Container kit-taskmanager-1 Stopped
+21:02:09  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:02:12  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:02:15  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:02:18  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+$ docker compose start taskmanager       (21:02:18.815)
+Container kit-taskmanager-1 Starting 
+ Container kit-taskmanager-1 Started
+21:02:23  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:02:27  job RESTARTING | tâches : {'CANCELED': 1, 'FAILED': 1}
+21:02:31  job RUNNING | tâches : {'INITIALIZING': 2}
+21:02:35  job RUNNING | tâches : {'RUNNING': 2}
+21:02:39  job RUNNING | tâches : {'RUNNING': 2}
+21:02:43  job RUNNING | tâches : {'RUNNING': 2}
+21:02:47  job RUNNING | tâches : {'RUNNING': 2}
+21:02:51  job RUNNING | tâches : {'RUNNING': 2}
+# job restauré depuis le checkpoint n°26 ; alertes dans le topic : 1877 (il y en avait 1539 juste après l'émission)

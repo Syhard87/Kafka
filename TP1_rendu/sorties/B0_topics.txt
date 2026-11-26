@@ -1,0 +1,15 @@
+$ ./kafka-topics.sh --bootstrap-server kafka1:9092 --create --topic commandes --partitions 6 --replication-factor 3
+Created topic commandes.
+
+$ ./kafka-topics.sh --bootstrap-server kafka1:9092 --create --topic ca_wm5 --partitions 1 --replication-factor 3 --config message.timestamp.type=LogAppendTime
+WARNING: Due to limitations in metric names, topics with a period ('.') or underscore ('_') could collide. To avoid issues it is best to use either, but not both.
+Created topic ca_wm5.
+
+$ ./kafka-topics.sh --bootstrap-server kafka1:9092 --create --topic ca_wm30 --partitions 1 --replication-factor 3 --config message.timestamp.type=LogAppendTime
+WARNING: Due to limitations in metric names, topics with a period ('.') or underscore ('_') could collide. To avoid issues it is best to use either, but not both.
+Created topic ca_wm30.
+
+$ ./kafka-topics.sh --bootstrap-server kafka1:9092 --create --topic ca_wm60 --partitions 1 --replication-factor 3 --config message.timestamp.type=LogAppendTime
+WARNING: Due to limitations in metric names, topics with a period ('.') or underscore ('_') could collide. To avoid issues it is best to use either, but not both.
+Created topic ca_wm60.
+

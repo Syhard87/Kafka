@@ -1,0 +1,17 @@
+$ hdfs dfs -mkdir -p /data/raw/commandes/ingestion_date=2026-11-02 /data/raw/produits /data/curated /data/analytics /data/rejects
+
+$ hdfs dfs -put commandes_exam1.csv /data/raw/commandes/ingestion_date=2026-11-02/
+
+$ hdfs dfs -put produits_exam1.csv /data/raw/produits/
+
+$ hdfs dfs -ls -R /data
+drwxr-xr-x   - hadoop supergroup          0 2026-11-26 20:47 /data/analytics
+drwxr-xr-x   - hadoop supergroup          0 2026-11-26 20:47 /data/curated
+drwxr-xr-x   - hadoop supergroup          0 2026-11-26 20:47 /data/raw
+drwxr-xr-x   - hadoop supergroup          0 2026-11-26 20:47 /data/raw/commandes
+drwxr-xr-x   - hadoop supergroup          0 2026-11-26 20:47 /data/raw/commandes/ingestion_date=2026-11-02
+-rw-r--r--   1 hadoop supergroup    1011127 2026-11-26 20:47 /data/raw/commandes/ingestion_date=2026-11-02/commandes_exam1.csv
+drwxr-xr-x   - hadoop supergroup          0 2026-11-26 20:47 /data/raw/produits
+-rw-r--r--   1 hadoop supergroup       1425 2026-11-26 20:47 /data/raw/produits/produits_exam1.csv
+drwxr-xr-x   - hadoop supergroup          0 2026-11-26 20:47 /data/rejects
+

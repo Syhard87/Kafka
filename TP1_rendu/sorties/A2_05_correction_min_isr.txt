@@ -1,0 +1,29 @@
+$ ./kafka-configs.sh --bootstrap-server kafka1:9092 --alter --entity-type topics --entity-name exam_cmd --add-config min.insync.replicas=2
+Completed updating config for topic exam_cmd.
+
+$ ./kafka-configs.sh --bootstrap-server kafka1:9092 --describe --entity-type topics --entity-name exam_cmd
+Dynamic configs for topic exam_cmd are:
+  min.insync.replicas=2 sensitive=false synonyms={DYNAMIC_TOPIC_CONFIG:min.insync.replicas=2, STATIC_BROKER_CONFIG:min.insync.replicas=2, DEFAULT_CONFIG:min.insync.replicas=1}
+
+$ printf "commande-1\ncommande-2\ncommande-3\ncommande-4\ncommande-5\ncommande-6\n" | ./kafka-console-producer.sh --bootstrap-server kafka1:9092 --topic exam_cmd --producer-property acks=all
+(aucune erreur : les 6 messages sont acquittés)
+
+$ ./kafka-console-consumer.sh --bootstrap-server kafka1:9092 --topic exam_cmd --from-beginning --timeout-ms 8000 --property print.partition=true --property print.offset=true
+Partition:4	Offset:0	commande-1
+Partition:4	Offset:1	commande-2
+Partition:4	Offset:2	commande-3
+Partition:4	Offset:3	commande-4
+Partition:4	Offset:4	commande-5
+Partition:4	Offset:5	commande-6
+[2026-11-26 20:45:03,642] ERROR Error processing message, terminating consumer process:  (org.apache.kafka.tools.consumer.ConsoleConsumer)
+org.apache.kafka.common.errors.TimeoutException
+Processed a total of 6 messages
+
+$ ./kafka-get-offsets.sh --bootstrap-server kafka1:9092 --topic exam_cmd
+exam_cmd:0:0
+exam_cmd:1:0
+exam_cmd:2:0
+exam_cmd:3:0
+exam_cmd:4:6
+exam_cmd:5:0
+

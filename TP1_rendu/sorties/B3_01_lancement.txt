@@ -1,0 +1,10 @@
+$ ./kafka-topics.sh --bootstrap-server kafka1:9092 --create --topic alertes_exam --partitions 3 --replication-factor 3
+Created topic alertes_exam.
+
+$ docker compose exec jobmanager ./bin/sql-client.sh -i /opt/sql/init.sql -f /opt/sql/B3_alertes_exam.sql
+[INFO] Executing SQL from file.
+> )[INFO] Execute statement succeeded.
+> HAVING COUNT(*)[INFO] Submitting SQL update statement to the cluster...
+[INFO] SQL update statement has been successfully submitted to the cluster:
+Job ID: e331d749807f9148e1b75b6af6d78fc3
+

@@ -1,0 +1,33 @@
+$ hdfs fsck /data/raw/commandes/ingestion_date=2026-11-02/commandes_exam1.csv -files -blocks -locations
+
+/data/raw/commandes/ingestion_date=2026-11-02/commandes_exam1.csv 1011127 bytes, replicated: replication=1, 1 block(s):  OK
+0. BP-355719713-172.19.0.2-1795725986073:blk_1073741825_1001 len=1011127 Live_repl=1  [DatanodeInfoWithStorage[172.19.0.3:9866,DS-948ade2b-d79c-4a61-b08a-bd6baebc01e5,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	1
+ Number of racks:		1
+ Total dirs:			0
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	1011127 B
+ Total files:	1
+ Total blocks (validated):	1 (avg. block size 1011127 B)
+ Minimally replicated blocks:	1 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	1
+ Average block replication:	1.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+ Blocks queued for replication:	0
+
+[...] (section « Erasure Coded Block Groups » vide, coupée pour la lisibilité)
+FSCK ended at Thu Nov 26 20:47:14 UTC 2026 in 13 milliseconds
+
+
+The filesystem under path '/data/raw/commandes/ingestion_date=2026-11-02/commandes_exam1.csv' is HEALTHY
+

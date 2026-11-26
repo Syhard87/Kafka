@@ -1,0 +1,23 @@
+$ hdfs dfs -put lake/curated/commandes /data/curated/ && hdfs dfs -put lake/rejects/commandes /data/rejects/ && hdfs dfs -put gold/ca_par_pays gold/ca_par_famille gold/indicateurs gold/rejets_par_motif /data/analytics/
+
+$ hdfs dfs -ls -R /data/curated /data/rejects /data/analytics   (colonnes : droits, taille, chemin)
+drwxr-xr-x         0  /data/curated/commandes
+-rw-r--r--    409682  /data/curated/commandes/part-00000-28ed98ad-7057-48dc-935e-ab777bea49ff-c000.snappy.parquet
+drwxr-xr-x         0  /data/rejects/commandes
+-rw-r--r--     25793  /data/rejects/commandes/part-00000-95a3e625-8ab9-4cf4-b31b-c4d623dff0be-c000.snappy.parquet
+drwxr-xr-x         0  /data/analytics/ca_par_famille
+-rw-r--r--      1821  /data/analytics/ca_par_famille/part-00000-03a35a95-cf01-4b82-899e-15d7c7f76f17-c000.snappy.parquet
+drwxr-xr-x         0  /data/analytics/ca_par_pays
+-rw-r--r--      1850  /data/analytics/ca_par_pays/part-00000-423ca38c-1d3e-40d1-b72c-aa0d7963174f-c000.snappy.parquet
+drwxr-xr-x         0  /data/analytics/indicateurs
+-rw-r--r--      2628  /data/analytics/indicateurs/part-00000-af160bd7-584a-490b-b771-13c35375a791-c000.snappy.parquet
+drwxr-xr-x         0  /data/analytics/rejets_par_motif
+-rw-r--r--      1230  /data/analytics/rejets_par_motif/part-00000-032e773b-425d-4b99-b1aa-1b52052ef98b-c000.snappy.parquet
+
+$ hdfs dfs -count -v -h /data/raw/commandes /data/curated /data/rejects /data/analytics
+   DIR_COUNT   FILE_COUNT       CONTENT_SIZE PATHNAME
+           2            1            987.4 K /data/raw/commandes
+           2            1            400.1 K /data/curated
+           2            1             25.2 K /data/rejects
+           5            4              7.4 K /data/analytics
+

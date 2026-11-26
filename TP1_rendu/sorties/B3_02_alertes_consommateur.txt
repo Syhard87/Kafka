@@ -1,0 +1,16 @@
+$ ./kafka-console-consumer.sh --bootstrap-server kafka1:9092 --topic alertes_exam --from-beginning --max-messages 8
+{"customer_id":"C000371","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":4,"total":927.48,"motif":"plus de 3 commandes en 1 minute"}
+{"customer_id":"C000295","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":6,"total":1137.88,"motif":"plus de 3 commandes en 1 minute"}
+{"customer_id":"C000481","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":8,"total":2088.37,"motif":"plus de 3 commandes en 1 minute"}
+{"customer_id":"C000885","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":4,"total":465.36,"motif":"plus de 3 commandes en 1 minute"}
+{"customer_id":"C000296","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":6,"total":1201.1,"motif":"plus de 3 commandes en 1 minute"}
+{"customer_id":"C000708","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":5,"total":990.51,"motif":"plus de 3 commandes en 1 minute"}
+{"customer_id":"C000476","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":4,"total":671.53,"motif":"plus de 3 commandes en 1 minute"}
+{"customer_id":"C000230","w_start":"2026-11-26 20:57:00","w_end":"2026-11-26 20:58:00","nb":5,"total":1502.55,"motif":"plus de 3 commandes en 1 minute"}
+Processed a total of 8 messages
+
+$ ./kafka-get-offsets.sh --bootstrap-server kafka1:9092 --topic alertes_exam   # nombre d'alertes par partition
+alertes_exam:0:91
+alertes_exam:1:0
+alertes_exam:2:125
+

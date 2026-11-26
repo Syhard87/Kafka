@@ -1,0 +1,7 @@
+$ echo "commande-test-1" | ./kafka-console-producer.sh --bootstrap-server kafka1:9092 --topic exam_cmd --producer-property acks=all --producer-property delivery.timeout.ms=15000 --producer-property request.timeout.ms=5000
+[2026-11-26 20:44:37,180] WARN [Producer clientId=console-producer] Got error produce response with correlation id 8 on topic-partition exam_cmd-3, retrying (2 attempts left). Error: NOT_ENOUGH_REPLICAS (org.apache.kafka.clients.producer.internals.Sender)
+[2026-11-26 20:44:37,292] WARN [Producer clientId=console-producer] Got error produce response with correlation id 9 on topic-partition exam_cmd-3, retrying (1 attempts left). Error: NOT_ENOUGH_REPLICAS (org.apache.kafka.clients.producer.internals.Sender)
+[2026-11-26 20:44:37,501] WARN [Producer clientId=console-producer] Got error produce response with correlation id 10 on topic-partition exam_cmd-3, retrying (0 attempts left). Error: NOT_ENOUGH_REPLICAS (org.apache.kafka.clients.producer.internals.Sender)
+[2026-11-26 20:44:37,971] ERROR Error when sending message to topic exam_cmd with key: null, value: 15 bytes with error: (org.apache.kafka.clients.producer.internals.ErrorLoggingCallback)
+org.apache.kafka.common.errors.NotEnoughReplicasException: Messages are rejected since there are fewer in-sync replicas than required.
+

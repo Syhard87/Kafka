@@ -1,0 +1,18 @@
+$ python B4_doublons.py alertes_exam_eos read_committed
+topic alertes_exam_eos, isolation.level=read_committed
+minute               alertes reçues alertes uniques  doublons
+2026-11-26 21:03:00              69              69         0
+2026-11-26 21:04:00             354             354         0
+2026-11-26 21:05:00             332             332         0
+2026-11-26 21:06:00             329             329         0
+TOTAL                          1084            1084         0
+
+$ python B4_doublons.py alertes_exam_eos read_uncommitted   # pour comparaison
+topic alertes_exam_eos, isolation.level=read_uncommitted
+minute               alertes reçues alertes uniques  doublons
+2026-11-26 21:03:00              69              69         0
+2026-11-26 21:04:00             354             354         0
+2026-11-26 21:05:00             332             332         0
+2026-11-26 21:06:00             329             329         0
+TOTAL                          1084            1084         0
+

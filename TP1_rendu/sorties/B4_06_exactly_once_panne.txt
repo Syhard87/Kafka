@@ -1,0 +1,15 @@
+# fenêtre [21:03, 21:04[ : les alertes apparaissent dans le topic et sont lisibles en read_committed à 21:04:09.1,
+#   au commit de la transaction (checkpoint), soit 9,1 s après la fin de la minute (≈ 5,5 s en at-least-once).
+# 21:05:09.086 : fenêtre suivante [21:04, 21:05[ en cours d'écriture. Panne immédiate :
+$ docker compose stop taskmanager        (21:05:09.086)
+21:05:12  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:05:15  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:05:18  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+$ docker compose start taskmanager       (21:05:18.884)
+21:05:23  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:05:27  job RESTARTING | tâches : {'FAILED': 1, 'CANCELED': 1}
+21:05:31  job RUNNING | tâches : {'CREATED': 2}
+21:05:35  job RUNNING | tâches : {'RUNNING': 2}
+21:05:39  job RUNNING | tâches : {'RUNNING': 2}
+21:05:43  job RUNNING | tâches : {'RUNNING': 2}
+# job restauré depuis le checkpoint n°10
