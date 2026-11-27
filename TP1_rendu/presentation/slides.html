@@ -326,4 +326,82 @@ code { font-family: "DejaVu Sans Mono", monospace; font-size: .86em; background:
   <p style="margin-top:20px">Questions ?</p>
 </section>
 
+
+<section data-n="16">
+  <div class="tag">Annexe A2</div>
+  <h1>Lire <code>kafka-topics --describe</code></h1>
+  <img class="shadow" src="../captures/term_A2_03_panne_kafka3.png" style="width:100%;max-height:300px;object-fit:contain;object-position:left top">
+  <table style="font-size:17px;margin-top:12px">
+    <tr><th>Colonne</th><th>Signification</th><th>Après l'arrêt de kafka3</th></tr>
+    <tr><td><b>Leader</b></td><td>broker qui reçoit les écritures et les lectures</td><td>partitions 0 et 3 : 3 → 1 (élu dans l'ISR)</td></tr>
+    <tr><td><b>Replicas</b></td><td>brokers <i>prévus</i> pour une copie ; le 1<sup>er</sup> est le leader préféré</td><td>inchangé : c'est l'affectation, pas l'état</td></tr>
+    <tr><td><b>Isr</b></td><td>répliques <b>à jour</b> avec le leader (retard &lt; 30 s) ; seules candidates pour devenir leader</td><td>3 → <b>2</b> : donc refus si min.insync = 3</td></tr>
+  </table>
+</section>
+
+<section data-n="17">
+  <div class="tag">Annexe B4</div>
+  <h1>Ce que contient un checkpoint (vérifié sur disque)</h1>
+  <div class="cols">
+    <div>
+      <h2>Comment il est pris</h2>
+      <ol class="small" style="padding-left:22px">
+        <li>Toutes les 10 s, le JobManager déclenche le checkpoint n.</li>
+        <li>Les sources notent leurs <b>offsets Kafka</b> et injectent une <b>barrière</b> dans le flux.</li>
+        <li>Chaque opérateur, quand la barrière est passée sur toutes ses entrées, <b>sauvegarde son état</b> en arrière-plan.</li>
+        <li>Le puits <b>prépare</b> sa transaction Kafka.</li>
+        <li>Toutes les tâches confirment : <code>_metadata</code> est écrit et le puits <b>valide</b> la transaction.</li>
+      </ol>
+    </div>
+    <div>
+      <table style="font-size:16px">
+        <tr><th>Contenu</th><th>Fichier</th></tr>
+        <tr><td>offsets Kafka + watermark des sources</td><td><code>_metadata</code> (726 o)</td></tr>
+        <tr><td>accumulateurs des fenêtres ouvertes, client par client, + timers</td><td>1 fichier par sous-tâche (262 et 303 clients)</td></tr>
+        <tr><td>état du writer + transactions à valider</td><td><code>_metadata</code></td></tr>
+        <tr><td><b>pas</b> les commandes : Kafka les rejoue</td><td>–</td></tr>
+      </table>
+      <p class="small muted" style="margin-top:10px">88 Ko, 21 à 137 ms, aligné. L'état monte de 40 à 98 Ko pendant la minute, puis retombe quand la fenêtre est émise et purgée.</p>
+    </div>
+  </div>
+</section>
+
+<section data-n="18">
+  <div class="tag">Annexe B4</div>
+  <h1>Exactly-once : écrit tout de suite, visible au commit</h1>
+  <div class="cols">
+    <div>
+      <table style="font-size:18px">
+        <tr><th>Heure</th><th>Ce qui se passe</th></tr>
+        <tr><td>00:22:05,6</td><td>fenêtre émise : alertes <b>écrites</b>, le HW monte, mais transaction ouverte donc invisibles</td></tr>
+        <tr><td>00:22:07,4</td><td>checkpoint n°5 terminé</td></tr>
+        <tr><td>00:22:07,6</td><td>transaction <b>validée</b> : le LSO rattrape le HW (+2 marqueurs de commit), alertes lisibles</td></tr>
+      </table>
+      <p class="small" style="margin-top:10px"><b>HW</b> = tout ce qui est écrit dans le topic ; <b>LSO</b> = ce qu'un lecteur <code>read_committed</code> peut lire.</p>
+    </div>
+    <div>
+      <table style="font-size:18px">
+        <tr><th>Minute 21:07 (panne avant le commit)</th><th class="n">Alertes</th></tr>
+        <tr><td>lecture <code>read_uncommitted</code></td><td class="n bad">654</td></tr>
+        <tr><td>lecture <code>read_committed</code></td><td class="n good">327</td></tr>
+      </table>
+      <div class="box"><p>La transaction interrompue est <b>dans le log mais annulée</b> : un lecteur read_committed ne la voit jamais. La fenêtre a été recalculée et validée une seule fois.</p></div>
+    </div>
+  </div>
+</section>
+
+<section data-n="19">
+  <div class="tag">Annexe A1</div>
+  <h1>Optimiser la rétention : stocker moins pour la même durée</h1>
+  <img class="shadow" src="../captures/term_A3_optimisation_stockage.png" style="width:100%">
+  <div class="cols" style="margin-top:14px">
+    <div>
+      <p class="small"><b>Même 30 000 commandes</b>, taille réelle du segment sur le broker. Le producteur compresse des <b>batchs</b> : plus ils sont gros (<code>linger.ms</code>), mieux ça compresse. Gain sur le disque, le réseau <b>et</b> la réplication.</p>
+    </div>
+    <div>
+      <p class="small"><b>15,55 To → 2,4 To</b> avec zstd. La rétention supprime des <b>segments entiers</b> (1 Go), vérifiés toutes les 5 min ; le segment actif n'est jamais supprimé. Sans réglage, le topic garde <b>7 jours</b> (défaut vérifié), pas 3.</p>
+    </div>
+  </div>
+</section>
+
 </body></html>

@@ -1,0 +1,9 @@
+$ python A_compression_test.py
+30000 messages JSON, 149 octets utiles en moyenne (clé + valeur)
+
+topic           linger.ms compression  batches octets/msg    taille   gain
+test_l0_none            0        none     1101      160.2    4.81 Mo   1.0x
+test_l5_none            5        none      575      159.1    4.77 Mo   1.0x
+test_l50_lz4           50         lz4      186       42.9    1.29 Mo   3.7x
+test_l50_zstd          50        zstd      191       24.7    0.74 Mo   6.5x
+

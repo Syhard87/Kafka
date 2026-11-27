@@ -1,6 +1,8 @@
 # Fiche d'oral : TP 1, de l'ingestion au KPI
 
 Environ 1 minute par slide, soit 15 minutes. Les chiffres en gras sont à dire à voix haute.
+Les slides 16 à 19 sont des **annexes** à ouvrir si la prof creuse : lecture de `--describe` (ISR), contenu d'un
+checkpoint, exactly-once, optimisation de la rétention. Pour les réponses détaillées, voir `preparation_oral.pdf`.
 
 ## Slide par slide
 
@@ -35,6 +37,7 @@ Environ 1 minute par slide, soit 15 minutes. Les chiffres en gras sont à dire �
 13. **F.** Suivre une commande sur le schéma : chemin chaud en haut, chemin froid en bas, contrôle d'écart entre les deux.
 14. **Risques.** Chaque parade a été vue dans une partie du TP (A2, B4, C). Amélioration : un seul nettoyage, partagé.
 15. **Conclusion.** Les 4 phrases, puis les questions.
+16. **Annexes (16 à 19)** : à montrer seulement en réponse à une question.
 
 ## Questions probables
 

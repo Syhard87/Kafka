@@ -1,0 +1,8 @@
+$ python (SparkSession par défaut, PySpark 4.0.1) : spark.conf.get(...)
+défauts : autoBroadcastJoinThreshold = 10485760b | AQE = true | skewJoin = true | seuil skew = 268435456b | facteur skew = 5.0 | advisoryPartitionSize = 67108864b | shuffle.partitions = 200 | maxPartitionBytes = 134217728b
+
+$ même requête CA par famille, SANS désactiver broadcast ni AQE
+plan avec les réglages par défaut : BroadcastHashJoin
+plan final AQE : ['AQEShuffleRead coalesced', 'BroadcastHashJoin', 'BroadcastHashJoin']
+taille estimée de la table produits : 1425 octets
+lecture des commandes : partitions = 1

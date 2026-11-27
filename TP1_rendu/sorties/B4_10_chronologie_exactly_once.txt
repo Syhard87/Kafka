@@ -1,0 +1,16 @@
+$ python B4_chronologie_exactly_once.py
+00:21:54.422  départ : HW=3117  LSO=3117  dernier checkpoint n°3
+00:21:57.406  checkpoint n°4 terminé à 00:21:57.330
+00:22:05.647  HW  3117 -> 3177  : alertes ÉCRITES dans le topic (transaction ouverte, invisibles en read_committed)
+00:22:07.590  HW  3177 -> 3179  : alertes ÉCRITES dans le topic (transaction ouverte, invisibles en read_committed)
+00:22:07.590  LSO 3117 -> 3179  : transaction VALIDÉE, alertes visibles en read_committed
+00:22:09.554  checkpoint n°5 terminé à 00:22:07.445
+00:22:18.642  checkpoint n°6 terminé à 00:22:17.334
+00:22:27.716  checkpoint n°7 terminé à 00:22:27.322
+00:22:39.793  checkpoint n°8 terminé à 00:22:37.315
+00:22:48.906  checkpoint n°9 terminé à 00:22:47.319
+00:22:57.983  checkpoint n°10 terminé à 00:22:57.327
+00:23:05.398  HW  3179 -> 3229  : alertes ÉCRITES dans le topic (transaction ouverte, invisibles en read_committed)
+00:23:05.457  HW  3229 -> 3384  : alertes ÉCRITES dans le topic (transaction ouverte, invisibles en read_committed)
+00:23:05.512  HW  3384 -> 3513  : alertes ÉCRITES dans le topic (transaction ouverte, invisibles en read_committed)
+

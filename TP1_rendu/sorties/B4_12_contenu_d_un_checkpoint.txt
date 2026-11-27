@@ -1,0 +1,40 @@
+$ curl localhost:8081/jobs/<job>/checkpoints/config   (job d'alertes exactly-once)
+  mode                          exactly_once
+  interval                      10000
+  timeout                       600000
+  max_concurrent                1
+  state_backend                 HashMapStateBackend
+  checkpoint_storage            FileSystemCheckpointStorage
+  unaligned_checkpoints         False
+  tolerable_failed_checkpoints  0
+
+$ ls -la /flink-data/checkpoints/<job>/chk-20   (seul le dernier checkpoint est conservé)
+-rw-r--r-- 1 flink flink 44649 Nov 27 00:24 01e2b757-e1aa-4e79-8a69-e50c8321c236
+-rw-r--r-- 1 flink flink 40969 Nov 27 00:24 05f61da2-9d4d-4efe-8247-c034ab9ad549
+-rw-r--r-- 1 flink flink  6494 Nov 27 00:24 _metadata
+
+$ curl localhost:8081/jobs/<job>/checkpoints/details/20   (taille de l'état par opérateur)
+  checkpoint n°20 COMPLETED : 88294 octets, 137 ms, aligné
+  GlobalWindowAggregate -> Calc -> Writer -> Committer      87568 octets  (2/2 sous-tâches)
+  Source commandes -> Calc -> LocalWindowAggregate            726 octets  (2/2 sous-tâches)
+
+# Ce qu'on trouve dedans (chaînes lisibles extraites des fichiers) :
+  _metadata         : SourceReaderState / SPLIT_DISTRIBUTE / commandes   -> offsets Kafka lus par chaque sous-tâche source
+                      watermark                                          -> watermark de la source
+                      writer_raw_states / alertes-exam-eos               -> état du writer Kafka (préfixe transactionnel)
+                      streaming_committer_raw_states                     -> transactions à valider à la fin du checkpoint
+  (checkpoint n°16) fichier n°1 : _timer_state/event_window-timers + 262 clients C0xxxxx -> fenêtres ouvertes (accumulateurs) et timers
+  (checkpoint n°16) fichier n°2 : _timer_state/event_window-timers + 303 clients C0xxxxx    de chaque sous-tâche (clés réparties par hash)
+  + les "serializer snapshots" (RowDataSerializer, LongSerializer...)   -> le schéma nécessaire pour relire l'état
+
+$ curl localhost:8081/jobs/<job>/checkpoints   (historique : taille de l'état à chaque checkpoint)
+  n°16  déclenché à 00:23:57  état  97494 octets  ######################################
+  n°17  déclenché à 00:24:07  état  39088 octets  ###############
+  n°18  déclenché à 00:24:17  état  63914 octets  #########################
+  n°19  déclenché à 00:24:27  état  79922 octets  ###############################
+  n°20  déclenché à 00:24:37  état  88294 octets  ###################################
+  n°21  déclenché à 00:24:47  état  94550 octets  #####################################
+  n°22  déclenché à 00:24:57  état  98138 octets  #######################################
+  n°23  déclenché à 00:25:07  état  40284 octets  ################
+  n°24  déclenché à 00:25:17  état  64006 octets  #########################
+  -> l'état grossit pendant la minute (nouveaux clients), puis retombe quand la fenêtre est émise et purgée

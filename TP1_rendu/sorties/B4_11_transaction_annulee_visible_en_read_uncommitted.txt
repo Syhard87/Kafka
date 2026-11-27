@@ -1,0 +1,20 @@
+$ python B4_doublons.py alertes_exam_eos read_uncommitted   # tout ce qui est physiquement dans le log
+topic alertes_exam_eos, isolation.level=read_uncommitted
+minute               alertes reçues alertes uniques  doublons
+2026-11-26 21:05:00             332             332         0
+2026-11-26 21:06:00             329             329         0
+2026-11-26 21:07:00             654             327       327
+2026-11-26 21:08:00             340             340         0
+2026-11-26 21:09:00             333             333         0
+TOTAL                          3476            3149       327
+
+$ python B4_doublons.py alertes_exam_eos read_committed     # ce que voit un lecteur normal
+topic alertes_exam_eos, isolation.level=read_committed
+minute               alertes reçues alertes uniques  doublons
+2026-11-26 21:05:00             332             332         0
+2026-11-26 21:06:00             329             329         0
+2026-11-26 21:07:00             327             327         0
+2026-11-26 21:08:00             340             340         0
+2026-11-26 21:09:00             333             333         0
+TOTAL                          3149            3149         0
+

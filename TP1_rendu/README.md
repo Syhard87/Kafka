@@ -6,10 +6,11 @@ Dossier de rendu du TP (équivalent du dossier `NOM_Prenom_Exam1` demandé : ren
 |---|---|
 | `compte_rendu.pdf`, `compte_rendu.docx` | compte rendu complet (A à F), avec captures et réponses |
 | `compte_rendu.md` | source du compte rendu |
-| `presentation_TP1.pdf` | support de présentation (15 slides, 16:9) ; source : `presentation/slides.html` |
+| `presentation_TP1.pdf` | support de présentation (15 slides + 4 annexes, 16:9) ; source : `presentation/slides.html` |
+| `preparation_oral.pdf` | dossier de préparation : mécanismes en profondeur et questions de la prof avec réponses justifiées |
 | `notes_oral.md` | quoi dire sur chaque slide et questions probables |
 | `donnees/` | `commandes_exam1.csv`, `produits_exam1.csv`, `ca_minute_flink.csv` et le script qui les génère |
-| `sql/` | Flink SQL : `B1_watermarks.sql`, `B3_alertes_exam.sql`, `B4_alertes_exactly_once.sql` ; scripts `B1_mesure.py`, `B4_doublons.py` |
+| `sql/` | Flink SQL : `B1_watermarks.sql`, `B3_alertes_exam.sql`, `B4_alertes_exactly_once.sql` ; scripts `A_compression_test.py`, `B1_mesure.py`, `B4_doublons.py`, `B4_chronologie_exactly_once.py` |
 | `spark/` | `TP1_spark_D_E.ipynb` (notebook exécuté) et `TP1_spark_D_E.py` (même code, en script) |
 | `gold/` | couche gold en Parquet + copies CSV : CA par pays, CA par famille, indicateurs, rejets par motif |
 | `lake/` | zones `curated` (commandes propres) et `rejects` (rejets avec motif), en Parquet |
