@@ -4,6 +4,7 @@ Dossier de rendu du TP (équivalent du dossier `NOM_Prenom_Exam1` demandé : ren
 
 | Fichier / dossier | Contenu |
 |---|---|
+| **`TP_1_reponses.docx`** | **l'énoncé avec, sous chaque question, la réponse : démarche, commandes, captures, explication** |
 | `compte_rendu.pdf`, `compte_rendu.docx` | compte rendu complet (A à F), avec captures et réponses |
 | `compte_rendu.md` | source du compte rendu |
 | `presentation_TP1.pdf` | support de présentation (15 slides + 4 annexes, 16:9) ; source : `presentation/slides.html` |
